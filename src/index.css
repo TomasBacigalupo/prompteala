@@ -1692,7 +1692,7 @@ button {
 @media (max-width: 860px) {
   .app {
     grid-template-columns: 1fr;
-    grid-template-rows: 56px 1fr auto;
+    grid-template-rows: 48px minmax(0, 1fr) calc(54px + env(safe-area-inset-bottom, 0px));
   }
   .sidebar {
     grid-row: auto;
@@ -1701,14 +1701,18 @@ button {
     border-right: 0;
     border-bottom: 1px solid var(--line);
     overflow: auto;
+    -webkit-overflow-scrolling: touch;
   }
   .nav {
     flex-direction: row;
     padding: 0 8px;
     overflow: auto;
+    flex: 1;
   }
   .nav button {
     white-space: nowrap;
+    padding: 8px 10px;
+    font-size: 12px;
   }
   .brand,
   .sidebar-foot {
@@ -1717,8 +1721,12 @@ button {
   .hero-copy,
   .action,
   .chapter {
-    padding-left: 20px;
-    padding-right: 20px;
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+  .chapter {
+    padding-top: 28px;
+    padding-bottom: 72px;
   }
   .split,
   .two,
@@ -1745,8 +1753,8 @@ button {
   }
 
   .token-scale {
-    height: 280px;
-    min-height: 280px;
+    height: 240px;
+    min-height: 240px;
   }
 
   .openai-copy {
@@ -1756,21 +1764,218 @@ button {
   .agente-demo {
     grid-template-columns: 1fr;
     min-height: 0;
+    gap: 14px;
+  }
+
+  .agente-example-list {
+    flex-direction: row;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    gap: 8px;
+  }
+
+  .agente-example {
+    flex: 0 0 auto;
+    max-width: 200px;
   }
 
   .agente-stage {
-    min-height: 240px;
+    min-height: 160px;
   }
+
+  .slide-chrome {
+    right: 12px;
+    bottom: 10px;
+  }
+
+  /* Compact horizontal bar — never stack (that ate landscape height) */
   .footer {
     grid-column: 1;
-    grid-template-columns: 1fr;
-    height: auto;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    height: calc(54px + env(safe-area-inset-bottom, 0px));
+    min-height: calc(54px + env(safe-area-inset-bottom, 0px));
+    max-height: calc(54px + env(safe-area-inset-bottom, 0px));
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+    overflow: hidden;
   }
   .footer button {
-    padding: 12px 16px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 2px;
+    padding: 4px 2px;
+    border-right: 1px solid var(--line);
+    border-bottom: 0;
+    text-align: center;
+  }
+  .footer button > span:last-child {
+    width: 100%;
+    max-width: 100%;
+  }
+  .footer button > span:last-child > span {
+    display: none; /* hide hints */
+  }
+  .footer strong {
+    font-size: 9px;
+    line-height: 1.1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .foot-ico {
+    width: 22px;
+    height: 22px;
+  }
+  .foot-ico svg {
+    width: 12px;
+    height: 12px;
+  }
+  .present-fab {
+    display: none;
+  }
+}
+
+/* Phone landscape / short viewports: keep chrome tiny so slides stay visible */
+@media (max-width: 960px) and (max-height: 480px) {
+  .app {
+    grid-template-columns: 1fr;
+    grid-template-rows: 36px minmax(0, 1fr) calc(44px + env(safe-area-inset-bottom, 0px));
+  }
+
+  .app.present {
+    grid-template-columns: 1fr;
+    grid-template-rows: 0 minmax(0, 1fr) 0;
+  }
+
+  .sidebar {
+    grid-row: auto;
+    flex-direction: row;
+    align-items: center;
     border-right: 0;
     border-bottom: 1px solid var(--line);
+    overflow: auto;
   }
+
+  .brand,
+  .sidebar-foot {
+    display: none;
+  }
+
+  .nav {
+    flex-direction: row;
+    padding: 0 6px;
+    overflow: auto;
+  }
+
+  .nav button {
+    padding: 4px 8px;
+    font-size: 11px;
+  }
+
+  .nav-num,
+  .home-ico {
+    display: none;
+  }
+
+  .stage {
+    min-height: 0;
+  }
+
+  .hero {
+    height: 100%;
+    min-height: 0;
+    grid-template-columns: 1fr;
+  }
+
+  .hero-copy {
+    padding: 10px 16px 12px;
+    justify-content: center;
+  }
+
+  .hero h1 {
+    font-size: clamp(22px, 7vh, 36px);
+    margin: 6px 0 10px;
+  }
+
+  .hero-meta {
+    margin-top: 8px;
+  }
+
+  /* Drop heavy visuals — they steal the only vertical space left */
+  .collage,
+  .slide-home .action {
+    display: none;
+  }
+
+  .action,
+  .chapter {
+    padding: 12px 14px 52px;
+  }
+
+  .chapter h1,
+  .chapter .display {
+    font-size: clamp(18px, 4.5vh, 28px);
+  }
+
+  .token-scale {
+    height: 120px;
+    min-height: 120px;
+  }
+
+  .agente-demo {
+    min-height: 0;
+    margin: 8px 0 12px;
+  }
+
+  .agente-stage {
+    min-height: 100px;
+  }
+
+  .stats,
+  .two,
+  .swap,
+  .lessons,
+  .timeline {
+    margin-top: 10px;
+  }
+
+  .footer {
+    grid-column: 1;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    height: calc(44px + env(safe-area-inset-bottom, 0px));
+    min-height: calc(44px + env(safe-area-inset-bottom, 0px));
+    max-height: calc(44px + env(safe-area-inset-bottom, 0px));
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+
+  .footer button {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 0;
+    padding: 4px 2px;
+    border-right: 1px solid var(--line);
+    border-bottom: 0;
+  }
+
+  .footer button > span:last-child {
+    display: none; /* icon-only in landscape */
+  }
+
+  .foot-ico {
+    width: 26px;
+    height: 26px;
+  }
+
+  .slide-chrome {
+    right: 8px;
+    bottom: 6px;
+  }
+
+  .slide-counter {
+    display: none;
+  }
+
   .present-fab {
     display: none;
   }
