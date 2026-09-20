@@ -59,7 +59,7 @@ export const copy = {
       'El modelo correcto, para la tarea correcta, corriendo en el lugar correcto.',
     cookCards: [
       {
-        title: 'Inmobiliaria familiar',
+        title: 'Inmobiliaria',
         body: 'Data entry, avisos, consultas, análisis y cierre de mes. Un agente que por primera vez hacía cosas.',
       },
       {
@@ -91,10 +91,31 @@ export const copy = {
         title: 'Yo no empecé por la IA local',
         lead: 'Llegué a los LLM locales por un problema bastante más simple: me empecé a chocar con los límites de mi cuenta de OpenAI.',
         body: 'En ese momento ya usaba OpenAI para procesar correcciones de esquí. Después empecé a jugar con OpenClaw y el consumo de modelos empezó a crecer bastante. Y ahí apareció mi primer problema.',
+        charts: {
+          usageLabel: 'TOKENS / MES',
+          usageTitle: 'USO',
+          months: ['Ene', 'Mar', 'May', 'Jul', 'Sep'],
+          billLabel: 'OPENAI BILL',
+          billTitle: 'FACTURA',
+          billLines: [
+            { name: 'Correcciones de esquí', value: '$48' },
+            { name: 'OpenClaw', value: '$312' },
+            { name: 'Agente inmobiliario', value: '$190' },
+          ],
+          billTotal: '$550',
+          rateLabel: 'REQUESTS',
+          rateTitle: 'RITMO',
+          rateValue: '12×',
+          rateSub: 'vs. mes 1',
+          limitLabel: 'CUENTA',
+          limitTitle: 'LÍMITE',
+          limitValue: 'HIT',
+          limitSub: 'rate limit · 429',
+        },
       },
       agente: {
         kicker: '02 · EL PRIMER AGENTE',
-        title: 'Un ayudante para la inmobiliaria de mi familia',
+        title: 'Un ayudante para una inmobiliaria',
         lead: 'La idea era simple: sacar tareas repetitivas del día a día y dejar que un agente se encargara de parte del trabajo.',
         pills: [
           'Data entry',
@@ -107,7 +128,79 @@ export const copy = {
         body: 'El agente tenía skills de Google que había encontrado y descargado, además de scripts que fui construyendo con Cursor. En realidad, no había tanta magia.',
         formula: 'LLM + APIs + scripts + herramientas + datos.',
         closer:
-          'Pero combinados de una manera que permitía que alguien de mi familia pudiera simplemente hablar con el agente y delegarle determinadas tareas. Por primera vez no era un chatbot. Era un asistente que podía hacer cosas.',
+          'Pero combinados de una manera que permitía simplemente hablar con el agente y delegarle determinadas tareas. Por primera vez no era un chatbot. Era un asistente que podía hacer cosas.',
+        humanLabel: 'Humano',
+        agentLabel: 'Agente',
+        examplesLabel: 'Ejemplos',
+        chatPlaceholder: 'Elegí un ejemplo',
+        thinkingLabel: 'pensando…',
+        sheetsWriting: 'Actualizando Google Sheet…',
+        sheetsDone: 'Google Sheet actualizado',
+        sheetHeaders: ['Unidad', 'Concepto', 'Monto'],
+        conversations: [
+          {
+            label: 'Cobro 3ero B',
+            messages: [
+              { role: 'human', text: 'Le cobre al 3ero B' },
+              { role: 'agent', text: 'bien cuanto?' },
+              { role: 'human', text: '1.5 millones' },
+              {
+                role: 'agent',
+                text: 'Este mes le corresponde pagar 1.3 millones de alquiler y 500.000 de expensas extraordinarias. Dejo una deuda de 300.000 anotada',
+              },
+            ],
+            sheetRows: [
+              { unit: '3B', concept: 'Alquiler', amount: '1.300.000' },
+              { unit: '3B', concept: 'Exp. extraordinarias', amount: '500.000' },
+              { unit: '3B', concept: 'Deuda', amount: '300.000', highlight: true },
+            ],
+          },
+          {
+            label: 'Consulta 2C',
+            messages: [
+              {
+                role: 'human',
+                text: 'Esta yendo Benito a cobrarle al 2C cuanto tiene que pagar este mes',
+              },
+              { role: 'agent', text: 'Le corresponde pagar 1.500.000 pesos' },
+            ],
+            sheetRows: [
+              { unit: '2C', concept: 'Alquiler mes', amount: '1.500.000', highlight: true },
+            ],
+          },
+          {
+            label: 'Quién falta pagar',
+            messages: [
+              { role: 'human', text: 'Quien falta pagar este mes?' },
+              {
+                role: 'agent',
+                text: 'Este mes falta pagar a los siguientes:\nCarlos 3B\nJuan 2A\nMartin PH\n¿Querés que les envíe un email recordándoles el monto?',
+              },
+            ],
+            sheetRows: [
+              { unit: '3B', concept: 'Carlos · pendiente', amount: '—' },
+              { unit: '2A', concept: 'Juan · pendiente', amount: '—' },
+              { unit: 'PH', concept: 'Martin · pendiente', amount: '—', highlight: true },
+            ],
+          },
+          {
+            label: 'Anotar un gasto',
+            messages: [
+              {
+                role: 'human',
+                text: 'Anota un gasto de 200.000 pesos Limpieza de aire del 1B que está vacío',
+              },
+              {
+                role: 'agent',
+                text: 'Listo! Este mes hubo un gasto de 2.000.000 pesos en Mantenimientos generales',
+              },
+            ],
+            sheetRows: [
+              { unit: '1B', concept: 'Limpieza de aire', amount: '200.000', highlight: true },
+              { unit: '—', concept: 'Mantenimientos (mes)', amount: '2.000.000' },
+            ],
+          },
+        ],
       },
       modelo: {
         kicker: '03 · LA PREGUNTA',
@@ -275,7 +368,7 @@ export const copy = {
       'The right model, for the right task, running in the right place.',
     cookCards: [
       {
-        title: 'Family real-estate agency',
+        title: 'Real-estate agency',
         body: 'Data entry, listings, queries, analysis, month-end. An agent that could actually do things.',
       },
       {
@@ -307,10 +400,31 @@ export const copy = {
         title: 'I did not start with local AI',
         lead: 'I got to local LLMs because of a much simpler problem: I started hitting the limits of my OpenAI account.',
         body: 'I was already using OpenAI to process ski corrections. Then I started playing with OpenClaw and model usage grew fast. That is when the first problem showed up.',
+        charts: {
+          usageLabel: 'TOKENS / MO',
+          usageTitle: 'USAGE',
+          months: ['Jan', 'Mar', 'May', 'Jul', 'Sep'],
+          billLabel: 'OPENAI BILL',
+          billTitle: 'INVOICE',
+          billLines: [
+            { name: 'Ski corrections', value: '$48' },
+            { name: 'OpenClaw', value: '$312' },
+            { name: 'Agency agent', value: '$190' },
+          ],
+          billTotal: '$550',
+          rateLabel: 'REQUESTS',
+          rateTitle: 'PACE',
+          rateValue: '12×',
+          rateSub: 'vs. month 1',
+          limitLabel: 'ACCOUNT',
+          limitTitle: 'LIMIT',
+          limitValue: 'HIT',
+          limitSub: 'rate limit · 429',
+        },
       },
       agente: {
         kicker: '02 · THE FIRST AGENT',
-        title: 'A helper for my family’s real-estate agency',
+        title: 'A helper for a real-estate agency',
         lead: 'The idea was simple: take repetitive daily work off people’s plates and let an agent handle part of it.',
         pills: [
           'Data entry',
@@ -323,7 +437,79 @@ export const copy = {
         body: 'The agent had Google skills I had found and downloaded, plus scripts I built with Cursor. There was not that much magic.',
         formula: 'LLM + APIs + scripts + tools + data.',
         closer:
-          'Combined in a way that let someone in my family just talk to the agent and delegate work. For the first time it was not a chatbot. It was an assistant that could do things.',
+          'Combined in a way that let someone just talk to the agent and delegate work. For the first time it was not a chatbot. It was an assistant that could do things.',
+        humanLabel: 'Human',
+        agentLabel: 'Agent',
+        examplesLabel: 'Examples',
+        chatPlaceholder: 'Pick an example',
+        thinkingLabel: 'thinking…',
+        sheetsWriting: 'Updating Google Sheet…',
+        sheetsDone: 'Google Sheet updated',
+        sheetHeaders: ['Unit', 'Concept', 'Amount'],
+        conversations: [
+          {
+            label: 'Collect 3rd B',
+            messages: [
+              { role: 'human', text: 'I collected from 3rd B' },
+              { role: 'agent', text: 'ok how much?' },
+              { role: 'human', text: '1.5 million' },
+              {
+                role: 'agent',
+                text: 'This month they owe 1.3 million in rent and 500,000 in extraordinary expenses. Leaving a 300,000 debt noted',
+              },
+            ],
+            sheetRows: [
+              { unit: '3B', concept: 'Rent', amount: '1,300,000' },
+              { unit: '3B', concept: 'Extra expenses', amount: '500,000' },
+              { unit: '3B', concept: 'Debt', amount: '300,000', highlight: true },
+            ],
+          },
+          {
+            label: 'Query 2C',
+            messages: [
+              {
+                role: 'human',
+                text: 'Benito is going to collect from 2C — how much do they owe this month',
+              },
+              { role: 'agent', text: 'They owe 1,500,000 pesos' },
+            ],
+            sheetRows: [
+              { unit: '2C', concept: 'Month rent', amount: '1,500,000', highlight: true },
+            ],
+          },
+          {
+            label: 'Who still owes',
+            messages: [
+              { role: 'human', text: 'Who still needs to pay this month?' },
+              {
+                role: 'agent',
+                text: 'Still pending this month:\nCarlos 3B\nJuan 2A\nMartin PH\nWant me to email them a reminder with the amount?',
+              },
+            ],
+            sheetRows: [
+              { unit: '3B', concept: 'Carlos · pending', amount: '—' },
+              { unit: '2A', concept: 'Juan · pending', amount: '—' },
+              { unit: 'PH', concept: 'Martin · pending', amount: '—', highlight: true },
+            ],
+          },
+          {
+            label: 'Log an expense',
+            messages: [
+              {
+                role: 'human',
+                text: 'Log a 200,000 peso expense — AC cleaning for vacant 1B',
+              },
+              {
+                role: 'agent',
+                text: 'Done! This month there was 2,000,000 pesos in general maintenance expenses',
+              },
+            ],
+            sheetRows: [
+              { unit: '1B', concept: 'AC cleaning', amount: '200,000', highlight: true },
+              { unit: '—', concept: 'Maintenance (month)', amount: '2,000,000' },
+            ],
+          },
+        ],
       },
       modelo: {
         kicker: '03 · THE QUESTION',

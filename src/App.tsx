@@ -1,5 +1,207 @@
-import { useEffect, useMemo, useState, type MouseEvent, type ReactNode } from 'react'
+import { useEffect, useMemo, useRef, useState, type MouseEvent, type ReactNode } from 'react'
 import { chapters, copy, type ChapterId, type Lang } from './content'
+
+type ChatMessage = { role: 'human' | 'agent'; text: string }
+type SheetRow = { unit: string; concept: string; amount: string; highlight?: boolean }
+type Conversation = {
+  label: string
+  messages: readonly ChatMessage[]
+  sheetRows: readonly SheetRow[]
+}
+
+type SheetPhase = 'idle' | 'writing' | 'done'
+
+function AgenteDemo({
+  examplesLabel,
+  chatPlaceholder,
+  humanLabel,
+  agentLabel,
+  thinkingLabel,
+  sheetsWriting,
+  sheetsDone,
+  sheetHeaders,
+  conversations,
+}: {
+  examplesLabel: string
+  chatPlaceholder: string
+  humanLabel: string
+  agentLabel: string
+  thinkingLabel: string
+  sheetsWriting: string
+  sheetsDone: string
+  sheetHeaders: readonly string[]
+  conversations: readonly Conversation[]
+}) {
+  const [activeIdx, setActiveIdx] = useState<number | null>(null)
+  const [visible, setVisible] = useState<ChatMessage[]>([])
+  const [thinking, setThinking] = useState(false)
+  const [sheetPhase, setSheetPhase] = useState<SheetPhase>('idle')
+  const [sheetRowsShown, setSheetRowsShown] = useState(0)
+  const timers = useRef<number[]>([])
+  const runId = useRef(0)
+
+  function clearTimers() {
+    timers.current.forEach((id) => window.clearTimeout(id))
+    timers.current = []
+  }
+
+  function schedule(fn: () => void, ms: number) {
+    timers.current.push(window.setTimeout(fn, ms))
+  }
+
+  useEffect(() => {
+    runId.current += 1
+    clearTimers()
+    setActiveIdx(null)
+    setVisible([])
+    setThinking(false)
+    setSheetPhase('idle')
+    setSheetRowsShown(0)
+    return () => clearTimers()
+  }, [conversations])
+
+  function play(index: number) {
+    const convo = conversations[index]
+    if (!convo) return
+    const id = ++runId.current
+    clearTimers()
+    setActiveIdx(index)
+    setVisible([])
+    setThinking(false)
+    setSheetPhase('idle')
+    setSheetRowsShown(0)
+
+    let at = 200
+    convo.messages.forEach((msg) => {
+      if (msg.role === 'agent') {
+        schedule(() => {
+          if (runId.current !== id) return
+          setThinking(true)
+        }, at)
+        at += 520
+        schedule(() => {
+          if (runId.current !== id) return
+          setThinking(false)
+          setVisible((prev) => [...prev, msg])
+        }, at)
+        at += 700
+      } else {
+        schedule(() => {
+          if (runId.current !== id) return
+          setThinking(false)
+          setVisible((prev) => [...prev, msg])
+        }, at)
+        at += 520
+      }
+    })
+
+    // Sheets flow after the conversation
+    schedule(() => {
+      if (runId.current !== id) return
+      setSheetPhase('writing')
+      setSheetRowsShown(0)
+    }, at + 280)
+
+    convo.sheetRows.forEach((_, i) => {
+      schedule(() => {
+        if (runId.current !== id) return
+        setSheetRowsShown(i + 1)
+      }, at + 280 + 380 * (i + 1))
+    })
+
+    schedule(() => {
+      if (runId.current !== id) return
+      setSheetPhase('done')
+    }, at + 280 + 380 * (convo.sheetRows.length + 1) + 200)
+  }
+
+  const active = activeIdx !== null ? conversations[activeIdx] : null
+  const idle = visible.length === 0 && !thinking && sheetPhase === 'idle'
+
+  return (
+    <div className="agente-demo" data-no-nav>
+      <div className="agente-examples">
+        <div className="agente-examples-label">{examplesLabel}</div>
+        <div className="agente-example-list">
+          {conversations.map((c, i) => (
+            <button
+              key={c.label}
+              type="button"
+              className={`agente-example${activeIdx === i ? ' active' : ''}`}
+              onClick={() => play(i)}
+            >
+              <span className="agente-example-num">{String(i + 1).padStart(2, '0')}</span>
+              <span className="agente-example-text">{c.label}</span>
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div className="agente-stage">
+        {idle ? <p className="agente-hint">{chatPlaceholder}</p> : null}
+
+        <div className="float-stream">
+          {visible.map((m, j) => (
+            <div className={`float-line ${m.role} float-in`} key={`${activeIdx}-${j}`}>
+              <span className="float-who">{m.role === 'human' ? humanLabel : agentLabel}</span>
+              <p className="float-text">{m.text}</p>
+            </div>
+          ))}
+          {thinking ? (
+            <div className="float-line agent float-in thinking">
+              <span className="float-who">{agentLabel}</span>
+              <p className="float-text float-thinking">
+                {thinkingLabel}
+                <span className="float-dots" aria-hidden>
+                  <span />
+                  <span />
+                  <span />
+                </span>
+              </p>
+            </div>
+          ) : null}
+        </div>
+
+        {sheetPhase !== 'idle' && active ? (
+          <div className={`sheet-flow float-in${sheetPhase === 'done' ? ' done' : ''}`}>
+            <div className="sheet-flow-status">
+              <span className="sheet-flow-dot" />
+              {sheetPhase === 'writing' ? sheetsWriting : sheetsDone}
+            </div>
+            <div className="sheet-card">
+              <div className="sheet-card-bar">
+                <span className="sheet-card-icon" aria-hidden />
+                <span>Google Sheets</span>
+                <span className="sheet-card-tab">cobros</span>
+              </div>
+              <table className="sheet-table">
+                <thead>
+                  <tr>
+                    {sheetHeaders.map((h) => (
+                      <th key={h}>{h}</th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {active.sheetRows.slice(0, sheetRowsShown).map((row, i) => (
+                    <tr
+                      key={`${row.unit}-${row.concept}-${i}`}
+                      className={`sheet-row float-in${row.highlight ? ' highlight' : ''}`}
+                    >
+                      <td>{row.unit}</td>
+                      <td>{row.concept}</td>
+                      <td>{row.amount}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        ) : null}
+      </div>
+    </div>
+  )
+}
 
 const chapterIds = chapters.map((c) => c.id)
 
@@ -138,6 +340,86 @@ function Collage({ lang }: { lang: Lang }) {
   )
 }
 
+function TokenScaleCharts({
+  charts,
+}: {
+  charts: (typeof copy)[Lang]['sections']['openai']['charts']
+}) {
+  const heights = [18, 32, 48, 72, 100]
+  const spark = [8, 14, 18, 28, 36, 48, 62, 78, 88, 100]
+
+  return (
+    <div className="token-scale" aria-hidden data-no-nav>
+      <div className="token-scale-track">
+        <div className="col wide">
+          <div className="tile paper grow">
+            <div className="label">{charts.usageLabel}</div>
+            <h3>{charts.usageTitle}</h3>
+            <div className="token-bars">
+              {heights.map((h, i) => (
+                <div className="token-bar-col" key={charts.months[i]}>
+                  <div className="token-bar-track">
+                    <i style={{ height: `${h}%` }} />
+                  </div>
+                  <span>{charts.months[i]}</span>
+                </div>
+              ))}
+            </div>
+            <div className="label" style={{ marginTop: 10 }}>
+              +1.2B TOKENS
+            </div>
+          </div>
+        </div>
+
+        <div className="col">
+          <div className="tile grow">
+            <div className="label">{charts.billLabel}</div>
+            <h3>{charts.billTitle}</h3>
+            {charts.billLines.map((line) => (
+              <div className="receipt-line" key={line.name}>
+                <span>{line.name}</span>
+                <span>{line.value}</span>
+              </div>
+            ))}
+            <div className="receipt-line">
+              <span>TOTAL</span>
+              <b>{charts.billTotal}</b>
+            </div>
+          </div>
+        </div>
+
+        <div className="col">
+          <div className="tile dark grow">
+            <div className="label">{charts.rateLabel}</div>
+            <div>{charts.rateTitle}</div>
+            <div className="big" style={{ marginTop: 8 }}>
+              {charts.rateValue}
+            </div>
+            <div className="token-spark">
+              {spark.map((v, i) => (
+                <i key={i} style={{ height: `${v}%` }} />
+              ))}
+            </div>
+            <div className="label" style={{ marginTop: 8 }}>
+              {charts.rateSub}
+            </div>
+          </div>
+          <div className="tile grow" style={{ background: '#fff4ee' }}>
+            <div className="label">{charts.limitLabel}</div>
+            <div>{charts.limitTitle}</div>
+            <div className="big" style={{ color: '#c2410c' }}>
+              {charts.limitValue}
+            </div>
+            <div className="label" style={{ marginTop: 6 }}>
+              {charts.limitSub}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 function DiagramRouter({ local, cloud }: { local: string; cloud: string }) {
   return (
     <div className="diagram">
@@ -172,7 +454,7 @@ function DiagramFinal() {
         <div className="arrow">▼</div>
         <div className="node">Local Backend</div>
         <div className="arrow">▼</div>
-        <div className="row3" style={{ gridTemplateColumns: '1fr 1fr 1fr', width: 'min(520px, 100%)' }}>
+        <div className="row3" style={{ gridTemplateColumns: '1fr 1fr 1fr', width: 'min(720px, 100%)' }}>
           <div className="node soft">Local DB</div>
           <div className="node soft">Local LLM</div>
           <div className="node soft">API Hooks</div>
@@ -360,27 +642,35 @@ export default function App() {
     )
   } else if (active === 'openai') {
     slide = (
-      <SlideShell className="chapter">
-        <div className="kicker">{s.openai.kicker}</div>
-        <h2>{s.openai.title}</h2>
-        <p className="lead">{s.openai.lead}</p>
-        <p>{s.openai.body}</p>
+      <SlideShell className="chapter chapter-wide chapter-openai">
+        <div className="openai-layout">
+          <div className="openai-copy">
+            <div className="kicker">{s.openai.kicker}</div>
+            <h2>{s.openai.title}</h2>
+            <p className="lead">{s.openai.lead}</p>
+            <p>{s.openai.body}</p>
+          </div>
+          <TokenScaleCharts charts={s.openai.charts} />
+        </div>
       </SlideShell>
     )
   } else if (active === 'agente') {
     slide = (
-      <SlideShell className="chapter">
+      <SlideShell className="chapter chapter-wide">
         <div className="kicker">{s.agente.kicker}</div>
         <h2>{s.agente.title}</h2>
         <p className="lead">{s.agente.lead}</p>
-        <div className="pills">
-          {s.agente.pills.map((p) => (
-            <span className="pill" key={p}>
-              {p}
-            </span>
-          ))}
-        </div>
-        <p>{s.agente.body}</p>
+        <AgenteDemo
+          examplesLabel={s.agente.examplesLabel}
+          chatPlaceholder={s.agente.chatPlaceholder}
+          humanLabel={s.agente.humanLabel}
+          agentLabel={s.agente.agentLabel}
+          thinkingLabel={s.agente.thinkingLabel}
+          sheetsWriting={s.agente.sheetsWriting}
+          sheetsDone={s.agente.sheetsDone}
+          sheetHeaders={s.agente.sheetHeaders}
+          conversations={s.agente.conversations}
+        />
         <div className="formula">{s.agente.formula}</div>
         <p>{s.agente.closer}</p>
       </SlideShell>
