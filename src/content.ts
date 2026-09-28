@@ -2,6 +2,7 @@ export type Lang = 'es' | 'en'
 
 export type ChapterId =
   | 'home'
+  | 'workspace'
   | 'openclaw'
   | 'servidor'
   | 'tokens'
@@ -13,6 +14,7 @@ export type ChapterId =
   | 'agente'
   | 'gemma'
   | 'next'
+  | 'snowmatch'
   | 'tesis'
 
 export const chapters: {
@@ -22,18 +24,20 @@ export const chapters: {
   en: string
 }[] = [
   { id: 'home', es: 'Inicio', en: 'Home' },
-  { id: 'openclaw', num: '01', es: 'OpenClaw', en: 'OpenClaw' },
-  { id: 'servidor', num: '02', es: 'Servidor', en: 'Server' },
-  { id: 'tokens', num: '03', es: 'Wallet', en: 'Wallet' },
-  { id: 'local', num: '04', es: 'Local', en: 'Local' },
-  { id: 'macmini', num: '05', es: 'Mac Mini', en: 'Mac Mini' },
-  { id: 'glm', num: '06', es: 'GLM', en: 'GLM' },
-  { id: 'nueveb', num: '07', es: '¿9B?', en: '9B?' },
-  { id: 'lmstudio', num: '08', es: 'LM Studio', en: 'LM Studio' },
-  { id: 'agente', num: '09', es: 'Inmobiliaria', en: 'Agency' },
+  { id: 'workspace', num: '01', es: 'OpenClaw', en: 'OpenClaw' },
+  { id: 'openclaw', num: '02', es: 'Agente personal', en: 'Personal agent' },
+  { id: 'servidor', num: '03', es: 'Servidor', en: 'Server' },
+  { id: 'tokens', num: '04', es: 'Wallet', en: 'Wallet' },
+  { id: 'local', num: '05', es: 'Local', en: 'Local' },
+  { id: 'macmini', num: '06', es: 'Mac Mini', en: 'Mac Mini' },
+  { id: 'glm', num: '07', es: 'GLM', en: 'GLM' },
+  { id: 'nueveb', num: '08', es: '¿9B?', en: '9B?' },
+  { id: 'lmstudio', num: '09', es: 'LM Studio', en: 'LM Studio' },
   { id: 'gemma', num: '10', es: 'Gemma 4', en: 'Gemma 4' },
-  { id: 'next', num: '11', es: 'Siguiente', en: 'Next' },
-  { id: 'tesis', num: '12', es: 'Simple', en: 'Simple' },
+  { id: 'agente', num: '11', es: 'Inmobiliaria', en: 'Agency' },
+  { id: 'next', num: '12', es: 'Siguiente', en: 'Next' },
+  { id: 'snowmatch', num: '13', es: 'Snowmatch', en: 'Snowmatch' },
+  { id: 'tesis', num: '14', es: 'Simple', en: 'Simple' },
 ]
 
 export const copy = {
@@ -54,7 +58,7 @@ export const copy = {
     copied: 'Copiado',
     speaker: 'Tomás Bacigalupo',
     speakerOrg: 'Build journey · agentes locales',
-    presentHint: 'Click izq/der · ← → · P escenario',
+    presentHint: 'Click avanza · doble click vuelve · ← → · P escenario',
     quote: 'Un agente simple, con un LLM local, en una máquina que controlás.',
     cookCards: [
       {
@@ -85,22 +89,28 @@ export const copy = {
       },
     ],
     sections: {
-      openclaw: {
-        kicker: '01 · LA TENTACIÓN',
-        title: 'OpenClaw salió. Lo probé en mi Mac.',
-        lead: 'Un agente general, con internet, que puede tocar tu máquina.',
-        fearTitle: 'Lo que pedís habilitar',
-        fears: [
-          { label: 'Internet', body: 'Puede salir a buscar, scrapear, llamar APIs.' },
-          { label: 'Archivos', body: 'Lee, escribe, mueve cosas en tu disco.' },
-          { label: 'Shell', body: 'Ejecuta comandos como vos.' },
-          { label: 'Tu Mac', body: 'No es un sandbox. Es tu computadora de todos los días.' },
+      workspace: {
+        kicker: '01 · EL AGENTE',
+        title: 'OpenClaw',
+        files: [
+          { name: 'SOUL.md', body: 'Personalidad y valores' },
+          { name: 'AGENT.md', body: 'Reglas e instrucciones' },
+          { name: 'USER.md', body: 'Quién sos vos' },
+          { name: 'MEMORY.md', body: 'Lo que recuerda' },
         ],
+        brain: 'Cerebro · OpenAI',
+        wallet: 'Wallet en llamas',
+      },
+      openclaw: {
+        kicker: '02 · LA TENTACIÓN',
+        title: 'Agente personal',
+        connected: 'Conectado',
+        privacy: 'Privacidad en riesgo',
         closer:
           'Emocionante. Útil. Y bastante scary: estás dándole a un agente permiso para operar sobre toda tu vida digital.',
       },
       servidor: {
-        kicker: '02 · AISLAR',
+        kicker: '03 · AISLAR',
         title: '¿Y si lo corro en otra máquina?',
         lead: 'La idea era simple: no en mi laptop. En un server.',
         options: [
@@ -114,11 +124,16 @@ export const copy = {
             meta: 'Opción B',
             body: 'Barata, siempre prendida… pero para LLMs locales se queda corta.',
           },
+          {
+            title: 'AWS EC2',
+            meta: 'Opción C',
+            body: 'Un server en la nube, prendido en minutos. Pero se paga por hora, y tus datos viven en la máquina de otro.',
+          },
         ],
         closer: 'Mmmh. Mejor un server. Pero un server que llama a la nube 24/7 tiene otro problema.',
       },
       tokens: {
-        kicker: '03 · EL COSTO',
+        kicker: '04 · EL COSTO',
         title: 'Una máquina que quema tokens 24/7',
         lead: 'Un agente siempre despierto no es “infraestructura”. Es una wallet kill.',
         charts: {
@@ -145,7 +160,7 @@ export const copy = {
         closer: 'Ahí aparece la pregunta obvia: ¿y si el modelo corre acá?',
       },
       local: {
-        kicker: '04 · EL GIRO',
+        kicker: '05 · EL GIRO',
         title: '¿Puedo correr un LLM local?',
         lead: 'YouTube. run.sh. Tutoriales. LM Studio. Ollama. De golpe el path cambia.',
         steps: [
@@ -157,7 +172,7 @@ export const copy = {
         closer: 'Ya no era “¿uso OpenClaw en la nube?”. Era “¿puedo tener el cerebro en casa?”.',
       },
       macmini: {
-        kicker: '05 · EL HARDWARE',
+        kicker: '06 · EL HARDWARE',
         title: 'Mac Mini 32 GB',
         lead: 'Unos ~US$1.200 en Estados Unidos. Suficiente RAM para modelos chicos/medianos.',
         specs: [
@@ -169,19 +184,29 @@ export const copy = {
         closer: 'Compré la máquina. Ahora faltaba el modelo.',
       },
       glm: {
-        kicker: '06 · EL PRIMER INTENTO',
+        kicker: '07 · EL PRIMER INTENTO',
         title: 'Primero probé GLM',
-        lead: 'Se veía potente. En la Mini… no entraba bien.',
-        verdict: 'DEMASIADO',
+        lead: 'Se veía potente. Y entraba en la Mini… pero dejaba la RAM al límite.',
+        verdict: 'AL LÍMITE',
+        model: 'GLM-4.7-Flash',
+        specs: [
+          { label: 'Parámetros', value: '30B', note: 'MoE · solo 3B activos por token' },
+          { label: 'Contexto', value: '200K', note: 'tokens (202.752 máx.)' },
+          { label: 'Entrenamiento', value: '23T', note: 'tokens · 23 billones (base GLM-4.5)' },
+        ],
+        benchTitle: 'Benchmarks oficiales',
+        quantTitle: 'Cuantizaciones (GGUF)',
+        ramLabel: '32 GB Mac Mini',
+        quantStatus: { fits: 'Entra, justo', tight: 'No entra', no: 'Ni cerca' },
         points: [
-          'Pesado para 32 GB si querés margen',
-          'Lento para un agente que decide y actúa',
-          'Bueno en paper. Malo como daily driver local',
+          'Entra en 32 GB, pero sin margen',
+          'Con la RAM al límite, no queda lugar para nada más',
+          'El server tenía otro trabajo principal: el LLM no podía comerse todo',
         ],
         closer: 'Había que bajar de tamaño. Apareció Qwen 9B. Y con él, una pregunta: ¿qué es un 9B?',
       },
       nueveb: {
-        kicker: '07 · EL MANUAL',
+        kicker: '08 · EL MANUAL',
         title: '¿Qué es un 9B? ¿Y el context window?',
         lead: 'Dos números que todo el mundo tira. Pocos explican.',
         paramsTitle: '9B = 9 mil millones de parámetros',
@@ -198,14 +223,14 @@ export const copy = {
         ],
       },
       lmstudio: {
-        kicker: '08 · EL PLAYGROUND',
+        kicker: '09 · EL PLAYGROUND',
         title: 'LM Studio para jugar',
         lead: 'Antes de arquitecturar nada: bajar modelos, chatear, sentir latencia, ver qué cabe en 32 GB.',
         pills: ['Bajar GGUF', 'Probar prompts', 'Medir tokens/s', 'Ver VRAM/RAM', 'Elegir default'],
         closer: 'El playground no es el producto. Pero sin playground no hay intuición.',
       },
       agente: {
-        kicker: '09 · LA PRIMERA VICTORIA',
+        kicker: '11 · LA PRIMERA VICTORIA',
         title: 'El agente inmobiliario en local',
         lead: 'Mac Mini + LLM local + scripts. Decide, pide info, corre herramientas, escribe en Google Sheets.',
         formula: 'LLM local + scripts + Google Sheets + un loop que decide.',
@@ -304,26 +329,37 @@ export const copy = {
         ],
       },
       next: {
-        kicker: '11 · LO QUE SIGUE',
-        title: 'Próximas ideas',
-        lead: 'Con un loop que funciona, aparecen más productos. Y más fricción.',
-        ideas: [
-          {
-            title: 'Sparta loop engineering',
-            body: 'Ingeniería del loop: menos magia, más operaciones permitidas, más control.',
-          },
-          {
-            title: 'Snowmatch lessons agent',
-            body: 'Un agente para lecciones, correcciones, cosas raras del día a día — facturas nuevas incluidas.',
-          },
+        kicker: '12 · EL PRIMER LOOP',
+        title: 'Sparta: un agente local que aprende solo',
+        leadBefore: 'En',
+        leadAfter: 'un LLM local recomienda salidas… y mejora su propio prompt según quién se anota.',
+        nodes: [
+          { icon: '📍', title: 'Posiciones', body: 'Dónde están los usuarios' },
+          { icon: '🤖', title: 'LLM local', body: 'Genera salidas recomendadas' },
+          { icon: '🙋', title: '¿Se anotaron?', body: 'Sí o no, en cada salida' },
+          { icon: '✍️', title: 'Mejora el prompt', body: 'Reescribe el prompt de salidas' },
         ],
-        block: {
-          title: 'Bloqueado por WhatsApp',
-          body: 'El canal es el producto… hasta que el canal te suspende, te limita, o te hackean. Ahí el problema deja de ser el modelo.',
-        },
+        promptLabel: 'Prompt de salidas',
+        closer: 'No hizo falta un modelo más grande. Hizo falta un loop: generar, medir, ajustar el prompt, repetir.',
+      },
+      snowmatch: {
+        kicker: '13 · PROBALO VOS',
+        title: 'Hablá con el LLM local y sacá una clase de esquí',
+        lead: 'Snowmatch es un agente que corre con un LLM local. Escaneá el QR y escribile por WhatsApp.',
+        scan: 'Escaneá con la cámara',
+        tagline: 'Tu próxima clase empieza acá',
+        waText: '¡Hola! Quiero sacar una clase de esquí',
+        agentName: 'Snowmatch agent',
+        exampleLabel: 'Ejemplo',
+        messages: [
+          { role: 'human', text: '¡Hola! Quiero sacar una clase de esquí' },
+          { role: 'agent', text: '¡Genial! ¿Qué día te queda bien y cuál es tu nivel?' },
+          { role: 'human', text: 'El sábado a la mañana. Soy principiante' },
+          { role: 'agent', text: 'Listo: sábado 10:00, clase para principiantes. ¿Te la reservo?' },
+        ],
       },
       tesis: {
-        kicker: '12 · LA IDEA',
+        kicker: '14 · LA IDEA',
         title: 'Agente + LLM local. Simple.',
         timeline: [
           'OpenClaw en la Mac → scary',
@@ -362,7 +398,7 @@ export const copy = {
     copied: 'Copied',
     speaker: 'Tomás Bacigalupo',
     speakerOrg: 'Build journey · local agents',
-    presentHint: 'Click left/right · ← → · P stage',
+    presentHint: 'Click next · double-click back · ← → · P stage',
     quote: 'A simple agent, with a local LLM, on a machine you control.',
     cookCards: [
       {
@@ -393,22 +429,28 @@ export const copy = {
       },
     ],
     sections: {
-      openclaw: {
-        kicker: '01 · THE TEMPTATION',
-        title: 'OpenClaw shipped. I tried it on my Mac.',
-        lead: 'A general agent, with internet, that can touch your machine.',
-        fearTitle: 'What you are enabling',
-        fears: [
-          { label: 'Internet', body: 'It can browse, scrape, call APIs.' },
-          { label: 'Files', body: 'It reads, writes, moves things on disk.' },
-          { label: 'Shell', body: 'It runs commands like you would.' },
-          { label: 'Your Mac', body: 'Not a sandbox. Your everyday computer.' },
+      workspace: {
+        kicker: '01 · THE AGENT',
+        title: 'OpenClaw',
+        files: [
+          { name: 'SOUL.md', body: 'Personality and values' },
+          { name: 'AGENT.md', body: 'Rules and instructions' },
+          { name: 'USER.md', body: 'Who you are' },
+          { name: 'MEMORY.md', body: 'What it remembers' },
         ],
+        brain: 'Brain · OpenAI',
+        wallet: 'Wallet on fire',
+      },
+      openclaw: {
+        kicker: '02 · THE TEMPTATION',
+        title: 'Personal agent',
+        connected: 'Connected',
+        privacy: 'Privacy at risk',
         closer:
           'Exciting. Useful. And pretty scary: you are giving an agent permission to operate across your whole digital life.',
       },
       servidor: {
-        kicker: '02 · ISOLATE',
+        kicker: '03 · ISOLATE',
         title: 'What if it runs on another machine?',
         lead: 'The idea was simple: not on my laptop. On a server.',
         options: [
@@ -422,11 +464,16 @@ export const copy = {
             meta: 'Option B',
             body: 'Cheap, always on… but too small for serious local LLMs.',
           },
+          {
+            title: 'AWS EC2',
+            meta: 'Option C',
+            body: 'A cloud server, up in minutes. But you pay by the hour, and your data lives on someone else’s machine.',
+          },
         ],
         closer: 'Mmmh. A server is better. But a server that calls the cloud 24/7 has another problem.',
       },
       tokens: {
-        kicker: '03 · THE COST',
+        kicker: '04 · THE COST',
         title: 'A machine that burns tokens 24/7',
         lead: 'An always-awake agent is not “infrastructure”. It is a wallet kill.',
         charts: {
@@ -453,7 +500,7 @@ export const copy = {
         closer: 'Then the obvious question: what if the model runs here?',
       },
       local: {
-        kicker: '04 · THE TURN',
+        kicker: '05 · THE TURN',
         title: 'Can I run a local LLM?',
         lead: 'YouTube. run.sh. Tutorials. LM Studio. Ollama. Suddenly the path flips.',
         steps: [
@@ -465,7 +512,7 @@ export const copy = {
         closer: 'It was no longer “do I use OpenClaw in the cloud?”. It was “can I keep the brain at home?”.',
       },
       macmini: {
-        kicker: '05 · THE HARDWARE',
+        kicker: '06 · THE HARDWARE',
         title: 'Mac Mini 32 GB',
         lead: 'About US$1,200 in the US. Enough RAM for small/mid models.',
         specs: [
@@ -477,19 +524,29 @@ export const copy = {
         closer: 'I bought the machine. Now I needed the model.',
       },
       glm: {
-        kicker: '06 · FIRST TRY',
+        kicker: '07 · FIRST TRY',
         title: 'First I tried GLM',
-        lead: 'It looked powerful. On the Mini… it did not really fit.',
-        verdict: 'TOO MUCH',
+        lead: 'It looked powerful. And it fit on the Mini… but it pushed RAM to the limit.',
+        verdict: 'AT THE LIMIT',
+        model: 'GLM-4.7-Flash',
+        specs: [
+          { label: 'Parameters', value: '30B', note: 'MoE · only 3B active per token' },
+          { label: 'Context', value: '200K', note: 'tokens (202,752 max)' },
+          { label: 'Training', value: '23T', note: 'tokens · 23 trillion (GLM-4.5 base)' },
+        ],
+        benchTitle: 'Official benchmarks',
+        quantTitle: 'Quantizations (GGUF)',
+        ramLabel: '32 GB Mac Mini',
+        quantStatus: { fits: 'Fits, barely', tight: 'Does not fit', no: 'Not even close' },
         points: [
-          'Heavy for 32 GB if you want headroom',
-          'Slow for an agent that decides and acts',
-          'Good on paper. Bad as a local daily driver',
+          'Fits in 32 GB, but with no headroom',
+          'With RAM maxed out, nothing else can run',
+          'The server had another main job: the LLM could not eat everything',
         ],
         closer: 'I had to go smaller. Qwen 9B showed up. And with it: what even is a 9B?',
       },
       nueveb: {
-        kicker: '07 · THE MANUAL',
+        kicker: '08 · THE MANUAL',
         title: 'What is a 9B? And the context window?',
         lead: 'Two numbers everyone throws around. Few explain.',
         paramsTitle: '9B = 9 billion parameters',
@@ -506,14 +563,14 @@ export const copy = {
         ],
       },
       lmstudio: {
-        kicker: '08 · THE PLAYGROUND',
+        kicker: '09 · THE PLAYGROUND',
         title: 'LM Studio to play',
         lead: 'Before architecture: download models, chat, feel latency, see what fits in 32 GB.',
         pills: ['Download GGUF', 'Try prompts', 'Measure tokens/s', 'Watch VRAM/RAM', 'Pick a default'],
         closer: 'The playground is not the product. But without a playground you have no intuition.',
       },
       agente: {
-        kicker: '09 · FIRST WIN',
+        kicker: '11 · FIRST WIN',
         title: 'The real-estate agent, local',
         lead: 'Mac Mini + local LLM + scripts. Decides, asks for info, runs tools, writes to Google Sheets.',
         formula: 'Local LLM + scripts + Google Sheets + a decide loop.',
@@ -612,26 +669,37 @@ export const copy = {
         ],
       },
       next: {
-        kicker: '11 · WHAT NEXT',
-        title: 'Next ideas',
-        lead: 'Once the loop works, more products show up. And more friction.',
-        ideas: [
-          {
-            title: 'Sparta loop engineering',
-            body: 'Engineering the loop: less magic, more allowed ops, more control.',
-          },
-          {
-            title: 'Snowmatch lessons agent',
-            body: 'An agent for lessons, corrections, weird daily stuff — new invoices included.',
-          },
+        kicker: '12 · THE FIRST LOOP',
+        title: 'Sparta: a local agent that learns on its own',
+        leadBefore: 'At',
+        leadAfter: 'a local LLM recommends outings… and improves its own prompt based on who signs up.',
+        nodes: [
+          { icon: '📍', title: 'Positions', body: 'Where users are' },
+          { icon: '🤖', title: 'Local LLM', body: 'Generates recommended outings' },
+          { icon: '🙋', title: 'Did they sign up?', body: 'Yes or no, for each outing' },
+          { icon: '✍️', title: 'Improves the prompt', body: 'Rewrites the outings prompt' },
         ],
-        block: {
-          title: 'Blocked by WhatsApp',
-          body: 'The channel is the product… until the channel suspends you, limits you, or gets hijacked. Then the problem is no longer the model.',
-        },
+        promptLabel: 'Outings prompt',
+        closer: 'It did not take a bigger model. It took a loop: generate, measure, tune the prompt, repeat.',
+      },
+      snowmatch: {
+        kicker: '13 · TRY IT',
+        title: 'Talk to the local LLM and book a ski lesson',
+        lead: 'Snowmatch is an agent running on a local LLM. Scan the QR and message it on WhatsApp.',
+        scan: 'Scan with your camera',
+        tagline: 'Your next lesson starts here',
+        waText: 'Hi! I want to book a ski lesson',
+        agentName: 'Snowmatch agent',
+        exampleLabel: 'Example',
+        messages: [
+          { role: 'human', text: 'Hi! I want to book a ski lesson' },
+          { role: 'agent', text: 'Great! Which day works for you, and what is your level?' },
+          { role: 'human', text: 'Saturday morning. I am a beginner' },
+          { role: 'agent', text: 'Done: Saturday 10:00, beginner lesson. Should I book it?' },
+        ],
       },
       tesis: {
-        kicker: '12 · THE IDEA',
+        kicker: '14 · THE IDEA',
         title: 'Agent + local LLM. Simple.',
         timeline: [
           'OpenClaw on the Mac → scary',

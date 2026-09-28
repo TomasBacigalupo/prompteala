@@ -1,5 +1,11 @@
 import { useEffect, useMemo, useRef, useState, type MouseEvent, type ReactNode } from 'react'
 import { chapters, copy, type ChapterId, type Lang } from './content'
+import openclawImg from './assets/openclaw.jpg'
+import gmailImg from './assets/gmail.png'
+import calendarImg from './assets/google-calendar.png'
+import openaiImg from './assets/openai.png'
+import snowmatchLogo from './assets/snowmatch-logo.png'
+import { QRCodeSVG } from 'qrcode.react'
 
 type ChatMessage = { role: 'human' | 'agent'; text: string }
 type SheetRow = { unit: string; concept: string; amount: string; highlight?: boolean }
@@ -344,7 +350,7 @@ function TokenScaleCharts({
   const spark = [8, 14, 18, 28, 36, 48, 62, 78, 88, 100]
 
   return (
-    <div className="token-scale" aria-hidden data-no-nav>
+    <div className="token-scale" aria-hidden>
       <div className="token-scale-track">
         <div className="col wide">
           <div className="tile paper grow">
@@ -415,23 +421,390 @@ function TokenScaleCharts({
   )
 }
 
-function FearGrid({
-  title,
-  fears,
+const fileLinkX = [120, 340, 560, 780]
+
+const brainLink = 'M530 115 C 550 100, 540 50, 560 50'
+
+// Indexed like `files` (SOUL, AGENT, USER, MEMORY); AGENT.md is revealed first.
+const fileRevealStep = [2, 1, 3, 4]
+const brainStep = 5
+const workspaceSteps = 5
+
+function OpenClawFiles({
+  files,
+  brain,
+  step,
 }: {
-  title: string
-  fears: readonly { label: string; body: string }[]
+  files: readonly { name: string; body: string }[]
+  brain: string
+  step: number
 }) {
   return (
-    <div className="fear-grid" data-no-nav>
-      <div className="fear-grid-label">{title}</div>
-      <div className="fear-grid-cards">
-        {fears.map((f) => (
-          <article className="fear-card" key={f.label}>
-            <div className="meta">{f.label}</div>
-            <p>{f.body}</p>
+    <div className="claw-files">
+      <svg className="claw-lines" viewBox="0 0 900 460" aria-hidden>
+        {step >= brainStep ? (
+          <g className="claw-reveal">
+            <path className="claw-line-base" d={brainLink} />
+            <path className="claw-line-draw" d={brainLink} pathLength={100} />
+            <path className="claw-line-flow brain" d={brainLink} pathLength={100} />
+            <circle r="5" className="claw-packet back">
+              <animateMotion dur="0.9s" repeatCount="indefinite" path={brainLink} />
+            </circle>
+            <circle r="5" className="claw-packet back">
+              <animateMotion
+                dur="0.9s"
+                begin="0.45s"
+                repeatCount="indefinite"
+                path={brainLink}
+                keyPoints="1;0"
+                keyTimes="0;1"
+                calcMode="linear"
+              />
+            </circle>
+          </g>
+        ) : null}
+        {fileLinkX.map((x, i) => {
+          if (step < fileRevealStep[i]) return null
+          const d = `M450 260 C 450 305, ${x} 285, ${x} 330`
+          const delay = i * 0.45
+          return (
+            <g key={x} className="claw-reveal">
+              <path className="claw-line-base" d={d} />
+              <path className="claw-line-draw" d={d} pathLength={100} />
+              <path
+                className="claw-line-flow"
+                d={d}
+                pathLength={100}
+                style={{ animationDelay: `${delay}s` }}
+              />
+              <circle r="5" className="claw-packet">
+                <animateMotion dur="1.8s" begin={`${delay}s`} repeatCount="indefinite" path={d} />
+              </circle>
+            </g>
+          )
+        })}
+      </svg>
+      <div className="claw-files-mascot" key={step}>
+        <img src={openclawImg} alt="OpenClaw" />
+      </div>
+      {files.map((f, i) =>
+        step >= fileRevealStep[i] ? (
+          <article
+            className="claw-file claw-pop"
+            key={f.name}
+            style={{ left: `${((fileLinkX[i] - 95) / 900) * 100}%` }}
+          >
+            <span className="claw-file-icon" aria-hidden />
+            <strong>{f.name}</strong>
+            <span>{f.body}</span>
           </article>
+        ) : null,
+      )}
+      {step >= brainStep ? (
+        <div className="claw-brain claw-pop">
+          <img src={openaiImg} alt="OpenAI" />
+          <span>{brain}</span>
+        </div>
+      ) : null}
+    </div>
+  )
+}
+
+const clawLinks = [
+  { d: 'M300 170 C 460 170, 460 85, 620 85', delay: 0 },
+  { d: 'M300 170 C 460 170, 460 255, 620 255', delay: 0.9 },
+]
+
+const connectSteps = 3
+const privacyStep = 3
+
+function PrivacyIcon() {
+  return (
+    <svg viewBox="0 0 48 48" aria-hidden>
+      <path
+        d="M24 4 7 10.5v12c0 10.5 7.2 18.6 17 21.5 9.8-2.9 17-11 17-21.5v-12Z"
+        fill="#fee2e2"
+        stroke="#dc2626"
+        strokeWidth="3"
+        strokeLinejoin="round"
+      />
+      <path d="M24 15v12" stroke="#dc2626" strokeWidth="4" strokeLinecap="round" />
+      <circle cx="24" cy="33.5" r="2.6" fill="#dc2626" />
+    </svg>
+  )
+}
+
+function OpenClawConnect({
+  connected,
+  privacy,
+  step,
+}: {
+  connected: string
+  privacy: string
+  step: number
+}) {
+  const targets = [
+    { name: 'gmail', src: gmailImg, alt: 'Gmail' },
+    { name: 'calendar', src: calendarImg, alt: 'Google Calendar' },
+  ]
+  return (
+    <div className={step >= privacyStep ? 'claw alert' : 'claw'}>
+      <svg className="claw-lines" viewBox="0 0 900 340" aria-hidden>
+        {clawLinks.slice(0, step).map((link) => (
+          <g key={link.d} className="claw-reveal">
+            <path className="claw-line-base" d={link.d} />
+            <path className="claw-line-draw" d={link.d} pathLength={100} />
+            <path
+              className="claw-line-flow"
+              d={link.d}
+              pathLength={100}
+              style={{ animationDelay: `${link.delay}s` }}
+            />
+            <circle r="5" className="claw-packet">
+              <animateMotion dur="1.8s" begin={`${link.delay}s`} repeatCount="indefinite" path={link.d} />
+            </circle>
+            <circle r="4" className="claw-packet back">
+              <animateMotion
+                dur="1.8s"
+                begin={`${link.delay + 0.9}s`}
+                repeatCount="indefinite"
+                path={link.d}
+                keyPoints="1;0"
+                keyTimes="0;1"
+                calcMode="linear"
+              />
+            </circle>
+          </g>
         ))}
+        {step > 0 ? <circle className="claw-hub" cx="300" cy="170" r="6" /> : null}
+      </svg>
+      <div className="claw-mascot" key={step}>
+        <img src={openclawImg} alt="OpenClaw" />
+      </div>
+      {targets.slice(0, step).map((target) => (
+        <div className={`claw-target claw-pop ${target.name}`} key={target.name}>
+          <span className="claw-logo">
+            <img src={target.src} alt={target.alt} />
+          </span>
+          <span className="claw-badge">
+            <i />
+            {connected}
+          </span>
+        </div>
+      ))}
+      {step >= privacyStep ? (
+        <div className="claw-privacy">
+          <span className="claw-privacy-ring" aria-hidden />
+          <span className="claw-privacy-ring second" aria-hidden />
+          <span className="claw-privacy-icon">
+            <PrivacyIcon />
+          </span>
+          <span className="claw-privacy-label">{privacy}</span>
+        </div>
+      ) : null}
+    </div>
+  )
+}
+
+const snowmatchPhone = '15392954110'
+
+function SnowmatchTry({ sm }: { sm: (typeof copy)[Lang]['sections']['snowmatch'] }) {
+  const [shown, setShown] = useState(0)
+  const waLink = `https://wa.me/${snowmatchPhone}?text=${encodeURIComponent(sm.waText)}`
+
+  useEffect(() => {
+    setShown(0)
+    const ids = sm.messages.map((_, i) => window.setTimeout(() => setShown(i + 1), 700 + i * 1400))
+    return () => ids.forEach((id) => window.clearTimeout(id))
+  }, [sm])
+
+  return (
+    <div className="snow">
+      <a className="snow-qr" href={waLink} target="_blank" rel="noreferrer">
+        <span className="snow-brand">
+          <img src={snowmatchLogo} alt="" />
+          <span>
+            <strong>
+              Snow<b>Match</b>
+            </strong>
+            <em>{sm.tagline}</em>
+          </span>
+        </span>
+        <span className="snow-qr-code">
+          <QRCodeSVG
+            value={waLink}
+            size={220}
+            marginSize={0}
+            fgColor="#212B36"
+            level="H"
+            imageSettings={{ src: snowmatchLogo, height: 52, width: 52, excavate: true }}
+          />
+        </span>
+        <span className="snow-qr-label">{sm.scan}</span>
+        <span className="snow-qr-phone">+1 539 295 4110</span>
+        <span className="snow-qr-url">snowmatch.pro</span>
+      </a>
+      <div className="snow-chat">
+        <div className="snow-chat-bar">
+          <span className="snow-avatar" aria-hidden>
+            <img src={snowmatchLogo} alt="" />
+          </span>
+          <span>
+            <strong>{sm.agentName}</strong>
+            <span>WhatsApp · {sm.exampleLabel}</span>
+          </span>
+        </div>
+        <div className="snow-chat-body">
+          {sm.messages.slice(0, shown).map((m, i) => (
+            <p className={`snow-msg ${m.role} float-in`} key={i}>
+              {m.text}
+            </p>
+          ))}
+        </div>
+      </div>
+    </div>
+  )
+}
+
+const spartaLoopPath = 'M120 180 A330 130 0 0 1 780 180 A330 130 0 0 1 120 180'
+const spartaNodeCenters = [
+  [120, 180],
+  [450, 50],
+  [780, 180],
+  [450, 310],
+]
+const spartaLapMs = 6000
+
+function SpartaLoop({
+  nodes,
+  promptLabel,
+}: {
+  nodes: readonly { icon: string; title: string; body: string }[]
+  promptLabel: string
+}) {
+  const [version, setVersion] = useState(1)
+
+  useEffect(() => {
+    const bump = () => setVersion((v) => v + 1)
+    let interval: number | undefined
+    const first = window.setTimeout(() => {
+      bump()
+      interval = window.setInterval(bump, spartaLapMs)
+    }, spartaLapMs * 0.75)
+    return () => {
+      window.clearTimeout(first)
+      window.clearInterval(interval)
+    }
+  }, [])
+
+  return (
+    <div className="sparta-loop">
+      <svg className="claw-lines" viewBox="0 0 900 360" aria-hidden>
+        <path className="claw-line-base" d={spartaLoopPath} />
+        {[0, 1, 2].map((i) => (
+          <circle key={i} r="6" className="claw-packet">
+            <animateMotion
+              dur={`${spartaLapMs / 1000}s`}
+              begin={`${-i * 0.35}s`}
+              repeatCount="indefinite"
+              path={spartaLoopPath}
+            />
+          </circle>
+        ))}
+      </svg>
+      {nodes.map((node, i) => {
+        const [x, y] = spartaNodeCenters[i]
+        return (
+          <div
+            className="sparta-node"
+            key={node.title}
+            style={{
+              left: `${((x - 100) / 900) * 100}%`,
+              top: `${((y - 38) / 360) * 100}%`,
+              animationDelay: `${(i * spartaLapMs) / 4000}s`,
+            }}
+          >
+            <span className="sparta-node-icon" aria-hidden>
+              {node.icon}
+            </span>
+            <span>
+              <strong>{node.title}</strong>
+              <span>{node.body}</span>
+            </span>
+          </div>
+        )
+      })}
+      <div className="sparta-prompt">
+        <span>{promptLabel}</span>
+        <b key={version} className="claw-pop">
+          v{version}
+        </b>
+      </div>
+    </div>
+  )
+}
+
+const glmBenchmarks = [
+  { name: 'AIME 25', value: 91.6 },
+  { name: 'τ²-Bench', value: 79.5 },
+  { name: 'GPQA', value: 75.2 },
+  { name: 'SWE-bench Verified', value: 59.2 },
+  { name: 'BrowseComp', value: 42.8 },
+]
+
+const glmQuants = [
+  { name: 'Q4_K_M', gb: 18.5, status: 'fits' },
+  { name: 'Q8_0', gb: 31.8, status: 'tight' },
+  { name: 'BF16', gb: 59.9, status: 'no' },
+] as const
+
+const glmRamGb = 32
+const glmMaxGb = 64
+
+function GlmSpecs({ glm }: { glm: (typeof copy)[Lang]['sections']['glm'] }) {
+  return (
+    <div className="glm-specs">
+      <div className="glm-specs-row">
+        {glm.specs.map((spec) => (
+          <div className="glm-spec" key={spec.label}>
+            <div className="meta">{spec.label}</div>
+            <div className="glm-spec-value">{spec.value}</div>
+            <div className="glm-spec-note">{spec.note}</div>
+          </div>
+        ))}
+      </div>
+      <div className="glm-specs-row two-col">
+        <div className="glm-panel">
+          <div className="meta">{glm.benchTitle}</div>
+          {glmBenchmarks.map((b, i) => (
+            <div className="glm-bench" key={b.name}>
+              <span>{b.name}</span>
+              <div className="glm-bench-track">
+                <i style={{ width: `${b.value}%`, animationDelay: `${0.1 + i * 0.08}s` }} />
+              </div>
+              <b>{b.value}</b>
+            </div>
+          ))}
+        </div>
+        <div className="glm-panel">
+          <div className="meta">{glm.quantTitle}</div>
+          <div className="glm-quants">
+            <div className="glm-ram" style={{ left: `calc(74px + (100% - 180px) * ${glmRamGb / glmMaxGb})` }}>
+              <span>{glm.ramLabel}</span>
+            </div>
+            {glmQuants.map((q, i) => (
+              <div className={`glm-quant ${q.status}`} key={q.name}>
+                <span className="glm-quant-name">{q.name}</span>
+                <div className="glm-quant-track">
+                  <i style={{ width: `${(q.gb / glmMaxGb) * 100}%`, animationDelay: `${0.1 + i * 0.1}s` }}>
+                    {q.gb} GB
+                  </i>
+                </div>
+                <span className="glm-quant-status">{glm.quantStatus[q.status]}</span>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   )
@@ -439,7 +812,7 @@ function FearGrid({
 
 function SpecGrid({ specs }: { specs: readonly { label: string; value: string }[] }) {
   return (
-    <div className="spec-grid" data-no-nav>
+    <div className="spec-grid">
       {specs.map((s) => (
         <div className="spec-cell" key={s.label}>
           <div className="meta">{s.label}</div>
@@ -464,7 +837,7 @@ function NineBVisual({
   compare: readonly { label: string; small: string; big: string; note: string }[]
 }) {
   return (
-    <div className="nineb" data-no-nav>
+    <div className="nineb">
       <div className="nineb-row">
         <article className="panel nineb-panel">
           <div className="meta">PARAMETERS</div>
@@ -535,6 +908,8 @@ function SlideShell({ children, className = '' }: { children: ReactNode; classNa
 export default function App() {
   const [lang, setLang] = useState<Lang>('es')
   const [active, setActive] = useState<ChapterId>('home')
+  const [step, setStep] = useState(0)
+  const clickTimer = useRef<number | undefined>(undefined)
   const [present, setPresent] = useState(false)
   const [copied, setCopied] = useState(false)
   const t = copy[lang]
@@ -551,13 +926,30 @@ export default function App() {
     [lang],
   )
 
+  function stepsFor(id: ChapterId) {
+    if (id === 'workspace') return workspaceSteps
+    if (id === 'openclaw') return connectSteps
+    return 0
+  }
+
   function goTo(id: ChapterId) {
     setActive(id)
+    setStep(0)
   }
 
   function jump(delta: number) {
+    if (delta > 0 && step < stepsFor(active)) {
+      setStep(step + 1)
+      return
+    }
+    if (delta < 0 && step > 0) {
+      setStep(step - 1)
+      return
+    }
     const next = chapterIds[Math.min(chapterIds.length - 1, Math.max(0, index + delta))]
-    if (next) setActive(next)
+    if (!next || next === active) return
+    setActive(next)
+    setStep(delta < 0 ? stepsFor(next) : 0)
   }
 
   useEffect(() => {
@@ -588,7 +980,7 @@ export default function App() {
     }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
-  }, [index])
+  }, [index, step])
 
   async function copyQuote(e?: MouseEvent) {
     e?.stopPropagation()
@@ -610,13 +1002,19 @@ export default function App() {
     const target = e.target as HTMLElement
     if (target.closest('button, a, input, textarea, [data-no-nav]')) return
 
-    const rect = e.currentTarget.getBoundingClientRect()
-    const x = e.clientX - rect.left
-    if (x < rect.width * 0.32) {
-      if (!isFirst) jump(-1)
-    } else {
-      if (!isLast) jump(1)
+    window.clearTimeout(clickTimer.current)
+    if (e.detail >= 2) {
+      if (!isFirst || step > 0) jump(-1)
+      return
     }
+
+    clickTimer.current = window.setTimeout(() => {
+      if (!isLast || step < stepsFor(active)) jump(1)
+    }, 250)
+  }
+
+  function onStageMouseDown(e: MouseEvent<HTMLElement>) {
+    if (e.detail >= 2) e.preventDefault()
   }
 
   const s = t.sections
@@ -636,7 +1034,7 @@ export default function App() {
                 className="cta"
                 onClick={(e) => {
                   e.stopPropagation()
-                  goTo('openclaw')
+                  goTo('workspace')
                 }}
               >
                 {t.heroCta} <span aria-hidden>→</span>
@@ -678,7 +1076,7 @@ export default function App() {
               </div>
             </div>
           </div>
-          <aside className="thesis" data-no-nav>
+          <aside className="thesis">
             <div className="thesis-head">
               <h2>{t.thesisTitle}</h2>
               <button
@@ -704,13 +1102,24 @@ export default function App() {
         </div>
       </SlideShell>
     )
+  } else if (active === 'workspace') {
+    slide = (
+      <SlideShell className="chapter chapter-wide">
+        <div className="kicker">{s.workspace.kicker}</div>
+        <h2>{s.workspace.title}</h2>
+        <OpenClawFiles
+          files={s.workspace.files}
+          brain={s.workspace.brain}
+          step={step}
+        />
+      </SlideShell>
+    )
   } else if (active === 'openclaw') {
     slide = (
       <SlideShell className="chapter chapter-wide">
         <div className="kicker">{s.openclaw.kicker}</div>
         <h2>{s.openclaw.title}</h2>
-        <p className="lead">{s.openclaw.lead}</p>
-        <FearGrid title={s.openclaw.fearTitle} fears={s.openclaw.fears} />
+        <OpenClawConnect connected={s.openclaw.connected} privacy={s.openclaw.privacy} step={step} />
         <p>{s.openclaw.closer}</p>
       </SlideShell>
     )
@@ -720,7 +1129,7 @@ export default function App() {
         <div className="kicker">{s.servidor.kicker}</div>
         <h2>{s.servidor.title}</h2>
         <p className="lead">{s.servidor.lead}</p>
-        <div className="two">
+        <div className="two three">
           {s.servidor.options.map((card) => (
             <article className="panel" key={card.title}>
               <div className="meta">{card.meta}</div>
@@ -768,11 +1177,14 @@ export default function App() {
     )
   } else if (active === 'glm') {
     slide = (
-      <SlideShell className="chapter">
+      <SlideShell className="chapter chapter-wide">
         <div className="kicker">{s.glm.kicker}</div>
         <h2>{s.glm.title}</h2>
         <p className="lead">{s.glm.lead}</p>
-        <p className="callout glm-verdict">{s.glm.verdict}</p>
+        <p className="callout glm-verdict">
+          <span className="glm-model">{s.glm.model}</span> {s.glm.verdict}
+        </p>
+        <GlmSpecs glm={s.glm} />
         <div className="tasks">
           {s.glm.points.map((p) => (
             <span className="pill" key={p}>
@@ -857,22 +1269,27 @@ export default function App() {
     )
   } else if (active === 'next') {
     slide = (
-      <SlideShell className="chapter">
+      <SlideShell className="chapter chapter-wide">
         <div className="kicker">{s.next.kicker}</div>
         <h2>{s.next.title}</h2>
-        <p className="lead">{s.next.lead}</p>
-        <div className="two">
-          {s.next.ideas.map((card) => (
-            <article className="panel" key={card.title}>
-              <h3>{card.title}</h3>
-              <p>{card.body}</p>
-            </article>
-          ))}
-        </div>
-        <article className="incident alert">
-          <h3>{s.next.block.title}</h3>
-          <p>{s.next.block.body}</p>
-        </article>
+        <p className="lead">
+          {s.next.leadBefore}{' '}
+          <a href="https://sparta-sport.com" target="_blank" rel="noreferrer">
+            sparta-sport.com
+          </a>{' '}
+          {s.next.leadAfter}
+        </p>
+        <SpartaLoop nodes={s.next.nodes} promptLabel={s.next.promptLabel} />
+        <p>{s.next.closer}</p>
+      </SlideShell>
+    )
+  } else if (active === 'snowmatch') {
+    slide = (
+      <SlideShell className="chapter chapter-wide">
+        <div className="kicker">{s.snowmatch.kicker}</div>
+        <h2>{s.snowmatch.title}</h2>
+        <p className="lead">{s.snowmatch.lead}</p>
+        <SnowmatchTry sm={s.snowmatch} />
       </SlideShell>
     )
   } else {
@@ -945,6 +1362,7 @@ export default function App() {
       <main
         className="stage"
         onClick={onStageClick}
+        onMouseDown={onStageMouseDown}
         role="presentation"
         aria-label={lang === 'es' ? 'Diapositiva' : 'Slide'}
       >
