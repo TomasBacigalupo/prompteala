@@ -1,6 +1,6 @@
-# Cómo llegué a los LLM locales
+# Build journey: de OpenClaw a un agente local
 
-Landing companion for Tomás Bacigalupo’s talk. Open it beside the stage and jump chapters as you speak.
+Talk companion for Tomás Bacigalupo’s build journey — OpenClaw on a Mac, wallet kill, Mac Mini, 9B/context, inmobiliaria agent, Gemma 4. Open it beside the stage and jump chapters as you speak.
 
 ```bash
 npm install

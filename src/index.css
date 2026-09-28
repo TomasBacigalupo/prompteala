@@ -1382,6 +1382,226 @@ button {
   margin: 4px 0 8px;
 }
 
+.fear-grid {
+  margin: 18px 0 16px;
+  width: 100%;
+}
+
+.fear-grid-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  margin-bottom: 10px;
+}
+
+.fear-grid-cards {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.fear-card {
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 14px 16px;
+  background: var(--wash);
+  min-height: 110px;
+}
+
+.fear-card .meta {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  color: var(--danger);
+  margin-bottom: 8px;
+}
+
+.fear-card p {
+  font-size: 14px;
+  line-height: 1.4;
+  color: var(--ink);
+}
+
+.spec-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  margin: 20px 0;
+  width: 100%;
+}
+
+.spec-cell {
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 16px;
+  background: var(--wash);
+}
+
+.spec-cell .meta {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+}
+
+.spec-value {
+  font-family: var(--display);
+  font-size: 26px;
+  letter-spacing: -0.04em;
+  margin-top: 6px;
+  font-weight: 800;
+}
+
+.step-list {
+  list-style: none;
+  display: grid;
+  gap: 10px;
+  margin: 20px 0;
+  width: 100%;
+}
+
+.step-list li {
+  display: grid;
+  grid-template-columns: 36px 1fr;
+  gap: 12px;
+  align-items: baseline;
+  border-bottom: 1px solid var(--line);
+  padding: 10px 0;
+}
+
+.step-list b {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--muted);
+  font-weight: 500;
+}
+
+.step-list span {
+  font-family: var(--display);
+  font-size: 20px;
+  letter-spacing: -0.03em;
+}
+
+.glm-verdict {
+  font-size: 42px;
+  font-weight: 800;
+  color: var(--danger);
+  border-left-color: var(--danger);
+}
+
+.nineb {
+  margin: 16px 0;
+  width: 100%;
+  display: grid;
+  gap: 14px;
+}
+
+.nineb-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.nineb-panel p {
+  font-size: 14px;
+  line-height: 1.45;
+  color: #333;
+}
+
+.nineb-bars {
+  display: grid;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.nineb-bar {
+  display: grid;
+  grid-template-columns: 48px 1fr;
+  gap: 8px;
+  align-items: center;
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.nineb-bar i {
+  display: block;
+  height: 10px;
+  background: #111;
+  border-radius: 2px;
+}
+
+.context-window {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 6px;
+  margin-top: 14px;
+}
+
+.context-slot {
+  border: 1px dashed var(--line-strong);
+  border-radius: 6px;
+  padding: 10px 6px;
+  text-align: center;
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--muted);
+  background: #fff;
+}
+
+.context-slot.used {
+  border-style: solid;
+  border-color: #111;
+  color: #111;
+  background: #ecece8;
+}
+
+.context-slot.empty {
+  opacity: 0.55;
+}
+
+.nineb-compare {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.nineb-compare-item {
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 14px 16px;
+  background: #fff;
+}
+
+.nineb-compare-item .meta {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+}
+
+.nineb-compare-vals {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin: 8px 0 4px;
+  font-family: var(--display);
+  font-size: 22px;
+  letter-spacing: -0.03em;
+}
+
+.nineb-compare-vals b {
+  font-weight: 800;
+}
+
+.nineb-compare-item .label {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  color: var(--faint);
+}
+
 .diagram {
   margin: 22px 0;
   background: #fafafa;
@@ -1736,8 +1956,32 @@ button {
   .agente-demo,
   .openai-layout,
   .lessons,
-  .timeline {
+  .timeline,
+  .fear-grid-cards,
+  .spec-grid,
+  .nineb-row,
+  .nineb-compare {
     grid-template-columns: 1fr;
+  }
+
+  .fear-grid-cards {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .spec-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .context-window {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .glm-verdict {
+    font-size: 32px;
+  }
+
+  .step-list span {
+    font-size: 17px;
   }
 
   .lesson:nth-last-child(-n + 2) {

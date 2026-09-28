@@ -95,7 +95,6 @@ function AgenteDemo({
       }
     })
 
-    // Sheets flow after the conversation
     schedule(() => {
       if (runId.current !== id) return
       setSheetPhase('writing')
@@ -239,43 +238,39 @@ function Collage({ lang }: { lang: Lang }) {
       <div className="collage-track">
         <div className="col wide">
           <div className="tile paper grow">
-            <div className="label">OPENAI USAGE</div>
-            <h3>LÍMITES</h3>
+            <div className="label">OPENCLAW ON MAC</div>
+            <h3>{es ? 'SCARY' : 'SCARY'}</h3>
             <div className="receipt-line">
-              <span>{es ? 'Correcciones de esquí' : 'Ski corrections'}</span>
-              <span>$48.20</span>
+              <span>Internet</span>
+              <span>ON</span>
             </div>
             <div className="receipt-line">
-              <span>OpenClaw</span>
-              <span>$312.04</span>
+              <span>{es ? 'Archivos' : 'Files'}</span>
+              <span>FULL</span>
             </div>
             <div className="receipt-line">
-              <span>{es ? 'Agente inmobiliario' : 'Agency agent'}</span>
-              <span>$190.11</span>
+              <span>Shell</span>
+              <span>ROOT-ish</span>
             </div>
             <div className="receipt-line">
               <span>TOTAL</span>
-              <b>$550.35</b>
-            </div>
-            <div className="label" style={{ marginTop: 10 }}>
-              CALIBRATION 100%
+              <b>{es ? 'MI MAC' : 'MY MAC'}</b>
             </div>
           </div>
         </div>
 
         <div className="col">
           <div className="tile grow">
-            <div className="label">PROBABILISTIC BOOLEAN</div>
-            <div>{es ? '¿NECESITO UN FRONTIER?' : 'DO I NEED FRONTIER?'}</div>
+            <div className="label">WALLET</div>
+            <div>{es ? 'TOKENS 24/7' : 'TOKENS 24/7'}</div>
             <div className="big" style={{ marginTop: 8 }}>
-              12%
+              KILL
             </div>
-            <div>true</div>
           </div>
           <div className="tile dark grow">
-            <div className="label">OUTPUT</div>
-            <div>{es ? 'NIEVE ESTA TEMPORADA' : 'SNOW THIS SEASON'}</div>
-            <div className="big">LOCURA</div>
+            <div className="label">HARDWARE</div>
+            <div>MAC MINI</div>
+            <div className="big">32 GB</div>
           </div>
         </div>
 
@@ -285,43 +280,43 @@ function Collage({ lang }: { lang: Lang }) {
 
         <div className="col">
           <div className="tile wash grow">
-            <div className="label">CHOICE</div>
-            <div>{es ? '¿DÓNDE CORRE?' : 'WHERE DOES IT RUN?'}</div>
+            <div className="label">MODEL</div>
+            <div>QWEN 9B</div>
             <div className="choice-grid">
               {[1, 0, 1, 1, 0, 1, 0, 0, 1, 1, 0, 1, 0, 1, 1, 0].map((on, i) => (
                 <div key={i} className={on ? 'cell on' : 'cell'} />
               ))}
             </div>
             <div className="label" style={{ marginTop: 8 }}>
-              LOCAL 72% · CLOUD 28%
+              LOCAL · FITS
             </div>
           </div>
           <div className="tile grow" style={{ background: '#fff4ee' }}>
-            <div className="label">SECURITY INCIDENT</div>
-            <div>{es ? 'WHATSAPP SUSPENDIDO' : 'WHATSAPP SUSPENDED'}</div>
+            <div className="label">CHANNEL</div>
+            <div>{es ? 'WHATSAPP' : 'WHATSAPP'}</div>
             <div className="big" style={{ color: '#c2410c' }}>
-              1 DÍA
+              BLOCK
             </div>
           </div>
         </div>
 
         <div className="col">
           <div className="tile grow">
-            <div className="label">SCORE</div>
-            <div>{es ? '¿PUEDE UN 4B CERRAR EL MES?' : 'CAN A 4B CLOSE THE MONTH?'}</div>
+            <div className="label">WIN</div>
+            <div>{es ? 'INMOBILIARIA' : 'AGENCY'}</div>
             <div className="score-row">
-              <span>OUTPUT</span>
-              <b>3.9/5</b>
+              <span>SHEETS</span>
+              <b>OK</b>
             </div>
             <div className="bars">
               <div className="bar">
-                5 <i style={{ width: '30%' }} />
+                5 <i style={{ width: '40%' }} />
               </div>
               <div className="bar">
-                4 <i style={{ width: '78%' }} />
+                4 <i style={{ width: '82%' }} />
               </div>
               <div className="bar">
-                3 <i style={{ width: '42%' }} />
+                3 <i style={{ width: '55%' }} />
               </div>
             </div>
           </div>
@@ -329,9 +324,9 @@ function Collage({ lang }: { lang: Lang }) {
 
         <div className="col">
           <div className="tile grow">
-            <div className="label">OPTION B</div>
-            <div>QWEN · GEMMA 2B/4B</div>
-            <div className="big">GRATIS</div>
+            <div className="label">NEXT</div>
+            <div>GEMMA 4</div>
+            <div className="big">JUMP</div>
             <div className="mini-cam" />
           </div>
         </div>
@@ -343,7 +338,7 @@ function Collage({ lang }: { lang: Lang }) {
 function TokenScaleCharts({
   charts,
 }: {
-  charts: (typeof copy)[Lang]['sections']['openai']['charts']
+  charts: (typeof copy)[Lang]['sections']['tokens']['charts']
 }) {
   const heights = [18, 32, 48, 72, 100]
   const spark = [8, 14, 18, 28, 36, 48, 62, 78, 88, 100]
@@ -366,7 +361,7 @@ function TokenScaleCharts({
               ))}
             </div>
             <div className="label" style={{ marginTop: 10 }}>
-              +1.2B TOKENS
+              +∞ IF ALWAYS ON
             </div>
           </div>
         </div>
@@ -420,47 +415,116 @@ function TokenScaleCharts({
   )
 }
 
-function DiagramRouter({ local, cloud }: { local: string; cloud: string }) {
+function FearGrid({
+  title,
+  fears,
+}: {
+  title: string
+  fears: readonly { label: string; body: string }[]
+}) {
   return (
-    <div className="diagram">
-      <div className="flow">
-        <div className="node filled">Request</div>
-        <div className="arrow">▼</div>
-        <div className="node">Router</div>
-        <div className="arrow">▼</div>
-        <div className="row3">
-          <div className="node soft">
-            Local LLM
-            <div className="label">{local}</div>
-          </div>
-          <div className="arrow">/</div>
-          <div className="node soft">
-            GPT
-            <div className="label">{cloud}</div>
-          </div>
-        </div>
+    <div className="fear-grid" data-no-nav>
+      <div className="fear-grid-label">{title}</div>
+      <div className="fear-grid-cards">
+        {fears.map((f) => (
+          <article className="fear-card" key={f.label}>
+            <div className="meta">{f.label}</div>
+            <p>{f.body}</p>
+          </article>
+        ))}
       </div>
     </div>
   )
 }
 
-function DiagramFinal() {
+function SpecGrid({ specs }: { specs: readonly { label: string; value: string }[] }) {
   return (
-    <div className="diagram">
-      <div className="flow">
-        <div className="node filled">User</div>
-        <div className="arrow">▼</div>
-        <div className="node">WhatsApp / API</div>
-        <div className="arrow">▼</div>
-        <div className="node">Local Backend</div>
-        <div className="arrow">▼</div>
-        <div className="row3" style={{ gridTemplateColumns: '1fr 1fr 1fr', width: 'min(720px, 100%)' }}>
-          <div className="node soft">Local DB</div>
-          <div className="node soft">Local LLM</div>
-          <div className="node soft">API Hooks</div>
+    <div className="spec-grid" data-no-nav>
+      {specs.map((s) => (
+        <div className="spec-cell" key={s.label}>
+          <div className="meta">{s.label}</div>
+          <div className="spec-value">{s.value}</div>
         </div>
+      ))}
+    </div>
+  )
+}
+
+function NineBVisual({
+  paramsTitle,
+  paramsBody,
+  contextTitle,
+  contextBody,
+  compare,
+}: {
+  paramsTitle: string
+  paramsBody: string
+  contextTitle: string
+  contextBody: string
+  compare: readonly { label: string; small: string; big: string; note: string }[]
+}) {
+  return (
+    <div className="nineb" data-no-nav>
+      <div className="nineb-row">
+        <article className="panel nineb-panel">
+          <div className="meta">PARAMETERS</div>
+          <h3>{paramsTitle}</h3>
+          <p>{paramsBody}</p>
+          <div className="nineb-bars" aria-hidden>
+            <div className="nineb-bar">
+              <span>9B</span>
+              <i style={{ width: '28%' }} />
+            </div>
+            <div className="nineb-bar">
+              <span>70B</span>
+              <i style={{ width: '78%' }} />
+            </div>
+            <div className="nineb-bar">
+              <span>400B+</span>
+              <i style={{ width: '100%' }} />
+            </div>
+          </div>
+        </article>
+        <article className="panel nineb-panel">
+          <div className="meta">CONTEXT</div>
+          <h3>{contextTitle}</h3>
+          <p>{contextBody}</p>
+          <div className="context-window" aria-hidden>
+            <div className="context-slot used">prompt</div>
+            <div className="context-slot used">history</div>
+            <div className="context-slot used">tools</div>
+            <div className="context-slot">reply</div>
+            <div className="context-slot empty">···</div>
+          </div>
+        </article>
+      </div>
+      <div className="nineb-compare">
+        {compare.map((c) => (
+          <div className="nineb-compare-item" key={c.label}>
+            <div className="meta">{c.label}</div>
+            <div className="nineb-compare-vals">
+              <span>{c.small}</span>
+              <span aria-hidden>→</span>
+              <b>{c.big}</b>
+            </div>
+            <div className="label">{c.note}</div>
+          </div>
+        ))}
       </div>
     </div>
+  )
+}
+
+function StepList({ steps }: { steps: readonly string[] }) {
+  return (
+    <ol className="step-list">
+      {steps.map((step, i) => (
+        <li key={step}>
+          <b>{String(i + 1).padStart(2, '0')}</b>
+          <span>{step}</span>
+        </li>
+      ))}
+    </ol>
   )
 }
 
@@ -572,7 +636,7 @@ export default function App() {
                 className="cta"
                 onClick={(e) => {
                   e.stopPropagation()
-                  goTo('openai')
+                  goTo('openclaw')
                 }}
               >
                 {t.heroCta} <span aria-hidden>→</span>
@@ -629,8 +693,8 @@ export default function App() {
             <div className="quote-box">
               <strong>{t.quote}</strong>
               {lang === 'es'
-                ? 'No llegué a los LLM locales porque quisiera una IA local. Llegué por costos, escala y seguridad.'
-                : 'I did not get to local LLMs because I wanted local AI. I got there through cost, scale, and security.'}
+                ? 'No empecé queriendo IA local. Empecé porque OpenClaw en mi Mac me asustó, y la nube 24/7 me quemó la wallet.'
+                : 'I did not start wanting local AI. I started because OpenClaw on my Mac scared me, and cloud 24/7 burned the wallet.'}
             </div>
             <button className="copy-btn" onClick={copyQuote}>
               {copied ? t.copied : t.copyQuote}
@@ -640,18 +704,115 @@ export default function App() {
         </div>
       </SlideShell>
     )
-  } else if (active === 'openai') {
+  } else if (active === 'openclaw') {
+    slide = (
+      <SlideShell className="chapter chapter-wide">
+        <div className="kicker">{s.openclaw.kicker}</div>
+        <h2>{s.openclaw.title}</h2>
+        <p className="lead">{s.openclaw.lead}</p>
+        <FearGrid title={s.openclaw.fearTitle} fears={s.openclaw.fears} />
+        <p>{s.openclaw.closer}</p>
+      </SlideShell>
+    )
+  } else if (active === 'servidor') {
+    slide = (
+      <SlideShell className="chapter">
+        <div className="kicker">{s.servidor.kicker}</div>
+        <h2>{s.servidor.title}</h2>
+        <p className="lead">{s.servidor.lead}</p>
+        <div className="two">
+          {s.servidor.options.map((card) => (
+            <article className="panel" key={card.title}>
+              <div className="meta">{card.meta}</div>
+              <h3>{card.title}</h3>
+              <p>{card.body}</p>
+            </article>
+          ))}
+        </div>
+        <p>{s.servidor.closer}</p>
+      </SlideShell>
+    )
+  } else if (active === 'tokens') {
     slide = (
       <SlideShell className="chapter chapter-wide chapter-openai">
         <div className="openai-layout">
           <div className="openai-copy">
-            <div className="kicker">{s.openai.kicker}</div>
-            <h2>{s.openai.title}</h2>
-            <p className="lead">{s.openai.lead}</p>
-            <p>{s.openai.body}</p>
+            <div className="kicker">{s.tokens.kicker}</div>
+            <h2>{s.tokens.title}</h2>
+            <p className="lead">{s.tokens.lead}</p>
+            <p>{s.tokens.closer}</p>
           </div>
-          <TokenScaleCharts charts={s.openai.charts} />
+          <TokenScaleCharts charts={s.tokens.charts} />
         </div>
+      </SlideShell>
+    )
+  } else if (active === 'local') {
+    slide = (
+      <SlideShell className="chapter">
+        <div className="kicker">{s.local.kicker}</div>
+        <h2>{s.local.title}</h2>
+        <p className="lead">{s.local.lead}</p>
+        <StepList steps={s.local.steps} />
+        <p>{s.local.closer}</p>
+      </SlideShell>
+    )
+  } else if (active === 'macmini') {
+    slide = (
+      <SlideShell className="chapter">
+        <div className="kicker">{s.macmini.kicker}</div>
+        <h2>{s.macmini.title}</h2>
+        <p className="lead">{s.macmini.lead}</p>
+        <SpecGrid specs={s.macmini.specs} />
+        <p>{s.macmini.closer}</p>
+      </SlideShell>
+    )
+  } else if (active === 'glm') {
+    slide = (
+      <SlideShell className="chapter">
+        <div className="kicker">{s.glm.kicker}</div>
+        <h2>{s.glm.title}</h2>
+        <p className="lead">{s.glm.lead}</p>
+        <p className="callout glm-verdict">{s.glm.verdict}</p>
+        <div className="tasks">
+          {s.glm.points.map((p) => (
+            <span className="pill" key={p}>
+              {p}
+            </span>
+          ))}
+        </div>
+        <p>{s.glm.closer}</p>
+      </SlideShell>
+    )
+  } else if (active === 'nueveb') {
+    slide = (
+      <SlideShell className="chapter chapter-wide">
+        <div className="kicker">{s.nueveb.kicker}</div>
+        <h2>{s.nueveb.title}</h2>
+        <p className="lead">{s.nueveb.lead}</p>
+        <NineBVisual
+          paramsTitle={s.nueveb.paramsTitle}
+          paramsBody={s.nueveb.paramsBody}
+          contextTitle={s.nueveb.contextTitle}
+          contextBody={s.nueveb.contextBody}
+          compare={s.nueveb.compare}
+        />
+        <p className="shift">{s.nueveb.insight}</p>
+      </SlideShell>
+    )
+  } else if (active === 'lmstudio') {
+    slide = (
+      <SlideShell className="chapter">
+        <div className="kicker">{s.lmstudio.kicker}</div>
+        <h2>{s.lmstudio.title}</h2>
+        <p className="lead">{s.lmstudio.lead}</p>
+        <div className="pills">
+          {s.lmstudio.pills.map((p) => (
+            <span className="pill" key={p}>
+              {p}
+            </span>
+          ))}
+        </div>
+        <p>{s.lmstudio.closer}</p>
       </SlideShell>
     )
   } else if (active === 'agente') {
@@ -675,147 +836,14 @@ export default function App() {
         <p>{s.agente.closer}</p>
       </SlideShell>
     )
-  } else if (active === 'modelo') {
+  } else if (active === 'gemma') {
     slide = (
       <SlideShell className="chapter">
-        <div className="kicker">{s.modelo.kicker}</div>
-        <h2>{s.modelo.title}</h2>
-        <p className="callout">{s.modelo.quote}</p>
-        <div className="tasks">
-          {s.modelo.tasks.map((p) => (
-            <span className="pill" key={p}>
-              {p}
-            </span>
-          ))}
-        </div>
-        <p>{s.modelo.body}</p>
-      </SlideShell>
-    )
-  } else if (active === 'qwen') {
-    slide = (
-      <SlideShell className="chapter">
-        <div className="kicker">{s.qwen.kicker}</div>
-        <h2>{s.qwen.title}</h2>
-        <div className="two">
-          {s.qwen.cards.map((card) => (
-            <article className="panel" key={card.title}>
-              <div className="meta">{card.meta}</div>
-              <h3>{card.title}</h3>
-              <p>{card.body}</p>
-            </article>
-          ))}
-        </div>
-      </SlideShell>
-    )
-  } else if (active === 'router') {
-    slide = (
-      <SlideShell className="chapter">
-        <div className="kicker">{s.router.kicker}</div>
-        <h2>{s.router.title}</h2>
-        <p className="lead">{s.router.lead}</p>
-        <DiagramRouter local={s.router.local} cloud={s.router.cloud} />
-        <p>{s.router.body}</p>
-      </SlideShell>
-    )
-  } else if (active === 'invierno') {
-    slide = (
-      <SlideShell className="chapter">
-        <div className="kicker">{s.invierno.kicker}</div>
-        <h2>{s.invierno.title}</h2>
-        <p className="lead">{s.invierno.lead}</p>
-        <div className="stats">
-          <div className="stat">
-            <b>+</b>
-            <span>{lang === 'es' ? 'Usuarios' : 'Users'}</span>
-          </div>
-          <div className="stat">
-            <b>+</b>
-            <span>{lang === 'es' ? 'Mensajes' : 'Messages'}</span>
-          </div>
-          <div className="stat">
-            <b>+</b>
-            <span>{lang === 'es' ? 'Procesos' : 'Processes'}</span>
-          </div>
-        </div>
-        <p>{s.invierno.body}</p>
-        <p style={{ marginTop: 12 }}>{s.invierno.closer}</p>
-      </SlideShell>
-    )
-  } else if (active === 'escala') {
-    slide = (
-      <SlideShell className="chapter">
-        <div className="kicker">{s.escala.kicker}</div>
-        <h2>{s.escala.title}</h2>
-        <p className="lead">{s.escala.lead}</p>
-        {s.escala.incidents.map((inc) => (
-          <article className="incident alert" key={inc.title}>
-            <h3>{inc.title}</h3>
-            <p>{inc.body}</p>
-          </article>
-        ))}
-        <p className="shift">{s.escala.shift}</p>
-        <div className="concerns">
-          {s.escala.concerns.map((c) => (
-            <span className="pill" key={c}>
-              {c}
-            </span>
-          ))}
-        </div>
-      </SlideShell>
-    )
-  } else if (active === 'apague') {
-    slide = (
-      <SlideShell className="chapter">
-        <div className="kicker">{s.apague.kicker}</div>
-        <h2>{s.apague.title}</h2>
-        <p className="lead">{s.apague.lead}</p>
-        <p>{s.apague.body}</p>
-      </SlideShell>
-    )
-  } else if (active === 'ingenieria') {
-    slide = (
-      <SlideShell className="chapter">
-        <div className="kicker">{s.ingenieria.kicker}</div>
-        <h2>{s.ingenieria.title}</h2>
-        <div className="swap">
-          <div className="swap-card from">
-            <small>FROM</small>
-            {s.ingenieria.from}
-          </div>
-          <div className="arrow">→</div>
-          <div className="swap-card to">
-            <small>TO</small>
-            {s.ingenieria.to}
-          </div>
-        </div>
-        <div className="pills">
-          {s.ingenieria.allowed.map((p) => (
-            <span className="pill" key={p}>
-              {p}
-            </span>
-          ))}
-        </div>
-        <p>{s.ingenieria.body}</p>
-      </SlideShell>
-    )
-  } else if (active === 'arquitectura') {
-    slide = (
-      <SlideShell className="chapter">
-        <div className="kicker">{s.arquitectura.kicker}</div>
-        <h2>{s.arquitectura.title}</h2>
-        <p className="lead">{s.arquitectura.lead}</p>
-        <DiagramFinal />
-        <p>{s.arquitectura.closer}</p>
-      </SlideShell>
-    )
-  } else if (active === 'aprendido') {
-    slide = (
-      <SlideShell className="chapter">
-        <div className="kicker">{s.aprendido.kicker}</div>
-        <h2>{s.aprendido.title}</h2>
-        <p className="lead">{s.aprendido.lead}</p>
+        <div className="kicker">{s.gemma.kicker}</div>
+        <h2>{s.gemma.title}</h2>
+        <p className="lead">{s.gemma.lead}</p>
         <div className="lessons">
-          {s.aprendido.lessons.map((lesson, i) => (
+          {s.gemma.points.map((lesson, i) => (
             <article className="lesson" key={lesson.title}>
               <b>0{i + 1}</b>
               <div>
@@ -825,6 +853,26 @@ export default function App() {
             </article>
           ))}
         </div>
+      </SlideShell>
+    )
+  } else if (active === 'next') {
+    slide = (
+      <SlideShell className="chapter">
+        <div className="kicker">{s.next.kicker}</div>
+        <h2>{s.next.title}</h2>
+        <p className="lead">{s.next.lead}</p>
+        <div className="two">
+          {s.next.ideas.map((card) => (
+            <article className="panel" key={card.title}>
+              <h3>{card.title}</h3>
+              <p>{card.body}</p>
+            </article>
+          ))}
+        </div>
+        <article className="incident alert">
+          <h3>{s.next.block.title}</h3>
+          <p>{s.next.block.body}</p>
+        </article>
       </SlideShell>
     )
   } else {
@@ -851,7 +899,7 @@ export default function App() {
     <div className={present ? 'app present' : 'app'}>
       <aside className="sidebar">
         <div className="brand">
-          <div className="brand-mark">LL</div>
+          <div className="brand-mark">BJ</div>
           <div className="brand-copy">
             <strong>{t.brand}</strong>
             <span>{t.brandSub}</span>
