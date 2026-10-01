@@ -13,6 +13,7 @@ export type ChapterId =
   | 'lmstudio'
   | 'agente'
   | 'gemma'
+  | 'coldemail'
   | 'next'
   | 'snowmatch'
   | 'tesis'
@@ -35,9 +36,10 @@ export const chapters: {
   { id: 'lmstudio', num: '09', es: 'LM Studio', en: 'LM Studio' },
   { id: 'gemma', num: '10', es: 'Gemma 4', en: 'Gemma 4' },
   { id: 'agente', num: '11', es: 'Inmobiliaria', en: 'Agency' },
-  { id: 'next', num: '12', es: 'Siguiente', en: 'Next' },
-  { id: 'snowmatch', num: '13', es: 'Snowmatch', en: 'Snowmatch' },
-  { id: 'tesis', num: '14', es: 'Simple', en: 'Simple' },
+  { id: 'coldemail', num: '12', es: 'Cold emails', en: 'Cold emails' },
+  { id: 'next', num: '13', es: 'Siguiente', en: 'Next' },
+  { id: 'snowmatch', num: '14', es: 'Snowmatch', en: 'Snowmatch' },
+  { id: 'tesis', num: '15', es: 'Simple', en: 'Simple' },
 ]
 
 export const copy = {
@@ -328,8 +330,47 @@ export const copy = {
           },
         ],
       },
+      coldemail: {
+        kicker: '12 · COLD EMAILS',
+        title: 'Cold emails con OpenClaw + Gemma 4 E4B',
+        lead: 'OpenClaw escribe cada mail personalizado con Gemma 4 E4B, lo manda por Gmail y lee las respuestas. Todo en la Mac Mini.',
+        modelLabel: 'Gemma 4 E4B · local',
+        outLabel: 'Enviados',
+        sentStatus: '✓ enviado',
+        inLabel: 'Respuestas',
+        sent: [
+          { to: 'Lucía · Inmobiliaria Norte', subject: 'Cobranzas con un agente local' },
+          { to: 'Martín · Escuela de ski', subject: 'Reservas por WhatsApp sin atender 24/7' },
+          { to: 'Sofía · Club de running', subject: 'Salidas recomendadas para tus socios' },
+        ],
+        replies: [
+          {
+            from: 'Lucía',
+            text: 'Me interesa, ¿tenés 15 min el jueves?',
+            tag: 'Interesada',
+            tone: 'good',
+            action: 'Propone horario en Calendar',
+          },
+          {
+            from: 'Martín',
+            text: 'Ahora no, escribime en marzo.',
+            tag: 'Más adelante',
+            tone: 'wait',
+            action: 'Agenda follow-up en marzo',
+          },
+          {
+            from: 'Sofía',
+            text: 'No, gracias.',
+            tag: 'No',
+            tone: 'no',
+            action: 'La saca de la secuencia',
+          },
+        ],
+        closer:
+          'Escribir, leer y clasificar son tareas acotadas: un modelo chico alcanza. El agente hace el volumen; el humano entra cuando alguien dice que sí.',
+      },
       next: {
-        kicker: '12 · EL PRIMER LOOP',
+        kicker: '13 · EL PRIMER LOOP',
         title: 'Sparta: un agente local que aprende solo',
         leadBefore: 'En',
         leadAfter: 'un LLM local recomienda salidas… y mejora su propio prompt según quién se anota.',
@@ -340,10 +381,11 @@ export const copy = {
           { icon: '✍️', title: 'Mejora el prompt', body: 'Reescribe el prompt de salidas' },
         ],
         promptLabel: 'Prompt de salidas',
+        photoCaption: 'Una salida recomendada: run en el lago',
         closer: 'No hizo falta un modelo más grande. Hizo falta un loop: generar, medir, ajustar el prompt, repetir.',
       },
       snowmatch: {
-        kicker: '13 · PROBALO VOS',
+        kicker: '14 · PROBALO VOS',
         title: 'Hablá con el LLM local y sacá una clase de esquí',
         lead: 'Snowmatch es un agente que corre con un LLM local. Escaneá el QR y escribile por WhatsApp.',
         scan: 'Escaneá con la cámara',
@@ -359,7 +401,7 @@ export const copy = {
         ],
       },
       tesis: {
-        kicker: '14 · LA IDEA',
+        kicker: '15 · LA IDEA',
         title: 'Agente + LLM local. Simple.',
         timeline: [
           'OpenClaw en la Mac → scary',
@@ -668,8 +710,47 @@ export const copy = {
           },
         ],
       },
+      coldemail: {
+        kicker: '12 · COLD EMAILS',
+        title: 'Cold emails with OpenClaw + Gemma 4 E4B',
+        lead: 'OpenClaw writes each personalized email with Gemma 4 E4B, sends it through Gmail and reads the replies. All on the Mac Mini.',
+        modelLabel: 'Gemma 4 E4B · local',
+        outLabel: 'Sent',
+        sentStatus: '✓ sent',
+        inLabel: 'Replies',
+        sent: [
+          { to: 'Lucía · Norte Real Estate', subject: 'Rent collection with a local agent' },
+          { to: 'Martín · Ski school', subject: 'WhatsApp bookings without being on 24/7' },
+          { to: 'Sofía · Running club', subject: 'Recommended runs for your members' },
+        ],
+        replies: [
+          {
+            from: 'Lucía',
+            text: 'Interested, do you have 15 min on Thursday?',
+            tag: 'Interested',
+            tone: 'good',
+            action: 'Proposes a slot in Calendar',
+          },
+          {
+            from: 'Martín',
+            text: 'Not now, write me in March.',
+            tag: 'Later',
+            tone: 'wait',
+            action: 'Schedules a follow-up in March',
+          },
+          {
+            from: 'Sofía',
+            text: 'No, thanks.',
+            tag: 'No',
+            tone: 'no',
+            action: 'Removes her from the sequence',
+          },
+        ],
+        closer:
+          'Writing, reading and classifying are narrow tasks: a small model is enough. The agent does the volume; the human steps in when someone says yes.',
+      },
       next: {
-        kicker: '12 · THE FIRST LOOP',
+        kicker: '13 · THE FIRST LOOP',
         title: 'Sparta: a local agent that learns on its own',
         leadBefore: 'At',
         leadAfter: 'a local LLM recommends outings… and improves its own prompt based on who signs up.',
@@ -680,10 +761,11 @@ export const copy = {
           { icon: '✍️', title: 'Improves the prompt', body: 'Rewrites the outings prompt' },
         ],
         promptLabel: 'Outings prompt',
+        photoCaption: 'A recommended outing: lake run',
         closer: 'It did not take a bigger model. It took a loop: generate, measure, tune the prompt, repeat.',
       },
       snowmatch: {
-        kicker: '13 · TRY IT',
+        kicker: '14 · TRY IT',
         title: 'Talk to the local LLM and book a ski lesson',
         lead: 'Snowmatch is an agent running on a local LLM. Scan the QR and message it on WhatsApp.',
         scan: 'Scan with your camera',
@@ -699,7 +781,7 @@ export const copy = {
         ],
       },
       tesis: {
-        kicker: '14 · THE IDEA',
+        kicker: '15 · THE IDEA',
         title: 'Agent + local LLM. Simple.',
         timeline: [
           'OpenClaw on the Mac → scary',

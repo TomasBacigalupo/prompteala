@@ -5,6 +5,7 @@ import gmailImg from './assets/gmail.png'
 import calendarImg from './assets/google-calendar.png'
 import openaiImg from './assets/openai.png'
 import snowmatchLogo from './assets/snowmatch-logo.png'
+import runningDayImg from './assets/running-day.jpg'
 import { QRCodeSVG } from 'qrcode.react'
 
 type ChatMessage = { role: 'human' | 'agent'; text: string }
@@ -606,6 +607,73 @@ function OpenClawConnect({
   )
 }
 
+const coldSteps = 3
+
+function ColdEmailFlow({
+  ce,
+  step,
+}: {
+  ce: (typeof copy)[Lang]['sections']['coldemail']
+  step: number
+}) {
+  return (
+    <div className="cold">
+      <div className="cold-col">
+        <div className="cold-col-label">
+          <img src={gmailImg} alt="" />
+          {ce.outLabel}
+        </div>
+        {step >= 1
+          ? ce.sent.map((mail, i) => (
+              <div className="cold-mail float-in" key={mail.to} style={{ animationDelay: `${i * 0.25}s` }}>
+                <span className="cold-mail-to">{mail.to}</span>
+                <strong>{mail.subject}</strong>
+                <span className="cold-mail-status">{ce.sentStatus}</span>
+              </div>
+            ))
+          : null}
+      </div>
+      <div className="cold-core">
+        <div className={step > 0 ? 'cold-flow on' : 'cold-flow'} aria-hidden>
+          <i />
+          <i />
+          <i />
+        </div>
+        <div className="cold-mascot" key={step}>
+          <img src={openclawImg} alt="OpenClaw" />
+        </div>
+        <span className="cold-model">{ce.modelLabel}</span>
+      </div>
+      <div className="cold-col">
+        <div className="cold-col-label">
+          <img src={gmailImg} alt="" />
+          {ce.inLabel}
+        </div>
+        {step >= 2
+          ? ce.replies.map((reply, i) => (
+              <div className="cold-reply float-in" key={reply.from} style={{ animationDelay: `${i * 0.25}s` }}>
+                <div className="cold-reply-head">
+                  <b>{reply.from}</b>
+                  {step >= 3 ? (
+                    <span className={`cold-tag ${reply.tone} claw-pop`} style={{ animationDelay: `${i * 0.2}s` }}>
+                      {reply.tag}
+                    </span>
+                  ) : null}
+                </div>
+                <p>{reply.text}</p>
+                {step >= 3 ? (
+                  <span className="cold-action float-in" style={{ animationDelay: `${0.3 + i * 0.2}s` }}>
+                    → {reply.action}
+                  </span>
+                ) : null}
+              </div>
+            ))
+          : null}
+      </div>
+    </div>
+  )
+}
+
 const snowmatchPhone = '15392954110'
 
 function SnowmatchTry({ sm }: { sm: (typeof copy)[Lang]['sections']['snowmatch'] }) {
@@ -674,6 +742,33 @@ const spartaNodeCenters = [
   [450, 310],
 ]
 const spartaLapMs = 6000
+
+const spartaSteps = 1
+
+function SpartaStage({
+  nodes,
+  promptLabel,
+  photoCaption,
+  step,
+}: {
+  nodes: readonly { icon: string; title: string; body: string }[]
+  promptLabel: string
+  photoCaption: string
+  step: number
+}) {
+  const split = step >= spartaSteps
+  return (
+    <div className={split ? 'sparta-stage split' : 'sparta-stage'}>
+      <SpartaLoop nodes={nodes} promptLabel={promptLabel} />
+      <figure className="sparta-photo" aria-hidden={!split}>
+        <div className="sparta-photo-img">
+          <img src={runningDayImg} alt="" />
+        </div>
+        <figcaption>{photoCaption}</figcaption>
+      </figure>
+    </div>
+  )
+}
 
 function SpartaLoop({
   nodes,
@@ -929,6 +1024,8 @@ export default function App() {
   function stepsFor(id: ChapterId) {
     if (id === 'workspace') return workspaceSteps
     if (id === 'openclaw') return connectSteps
+    if (id === 'coldemail') return coldSteps
+    if (id === 'next') return spartaSteps
     return 0
   }
 
@@ -1267,6 +1364,16 @@ export default function App() {
         </div>
       </SlideShell>
     )
+  } else if (active === 'coldemail') {
+    slide = (
+      <SlideShell className="chapter chapter-wide">
+        <div className="kicker">{s.coldemail.kicker}</div>
+        <h2>{s.coldemail.title}</h2>
+        <p className="lead">{s.coldemail.lead}</p>
+        <ColdEmailFlow ce={s.coldemail} step={step} />
+        <p>{s.coldemail.closer}</p>
+      </SlideShell>
+    )
   } else if (active === 'next') {
     slide = (
       <SlideShell className="chapter chapter-wide">
@@ -1279,7 +1386,12 @@ export default function App() {
           </a>{' '}
           {s.next.leadAfter}
         </p>
-        <SpartaLoop nodes={s.next.nodes} promptLabel={s.next.promptLabel} />
+        <SpartaStage
+          nodes={s.next.nodes}
+          promptLabel={s.next.promptLabel}
+          photoCaption={s.next.photoCaption}
+          step={step}
+        />
         <p>{s.next.closer}</p>
       </SlideShell>
     )

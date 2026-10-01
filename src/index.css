@@ -2023,6 +2023,195 @@ button {
   color: #b45309;
 }
 
+.cold {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 200px minmax(0, 1fr);
+  gap: 24px;
+  align-items: start;
+  max-width: 1040px;
+  margin: 12px 0 18px;
+}
+
+.cold-col {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-height: 300px;
+  padding: 14px;
+  border: 1px solid var(--line-strong);
+  border-radius: 16px;
+  background: var(--wash);
+}
+
+.cold-col-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.cold-col-label img {
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
+}
+
+.cold-mail,
+.cold-reply {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--paper);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.05);
+}
+
+.cold-mail-to {
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.cold-mail strong {
+  font-size: 14px;
+}
+
+.cold-mail-status {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: #16a34a;
+}
+
+.cold-reply-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 13px;
+}
+
+.cold-reply p {
+  margin: 0;
+  font-size: 14px;
+}
+
+.cold-tag {
+  padding: 2px 9px;
+  border-radius: 999px;
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.cold-tag.good {
+  background: #dcfce7;
+  color: #15803d;
+}
+
+.cold-tag.wait {
+  background: #fef3c7;
+  color: #b45309;
+}
+
+.cold-tag.no {
+  background: #f1f1ee;
+  color: var(--muted);
+}
+
+.cold-action {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--accent);
+}
+
+.cold-core {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding-top: 40px;
+  isolation: isolate;
+}
+
+.cold-mascot {
+  width: 170px;
+  height: 170px;
+  animation: claw-hop 0.45s cubic-bezier(0.3, 1.6, 0.5, 1);
+}
+
+.cold-mascot img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  mix-blend-mode: multiply;
+  animation: claw-bob 2.4s ease-in-out infinite;
+}
+
+.cold-model {
+  padding: 4px 12px;
+  border-radius: 999px;
+  background: var(--ink);
+  color: #fff;
+  font-family: var(--mono);
+  font-size: 11px;
+  white-space: nowrap;
+}
+
+.cold-flow {
+  position: absolute;
+  top: 115px;
+  left: -24px;
+  right: -24px;
+  height: 2px;
+  background: repeating-linear-gradient(90deg, var(--line-strong) 0 6px, transparent 6px 12px);
+  z-index: -1;
+}
+
+.cold-flow i {
+  position: absolute;
+  top: -3px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+  opacity: 0;
+}
+
+.cold-flow.on i {
+  animation: cold-packet 2.4s linear infinite;
+}
+
+.cold-flow.on i:nth-child(2) {
+  animation-delay: 0.8s;
+}
+
+.cold-flow.on i:nth-child(3) {
+  animation-delay: 1.6s;
+}
+
+@keyframes cold-packet {
+  0% {
+    left: 0;
+    opacity: 0;
+  }
+  10%,
+  90% {
+    opacity: 1;
+  }
+  100% {
+    left: calc(100% - 8px);
+    opacity: 0;
+  }
+}
+
 .snow {
   display: grid;
   grid-template-columns: max-content minmax(0, 420px);
@@ -2201,6 +2390,84 @@ button {
   width: min(100%, 900px, calc((100vh - 330px) * 2.5));
   aspect-ratio: 900 / 360;
   margin: 12px 0 8px;
+}
+
+.sparta-stage {
+  --sparta-photo-w: clamp(220px, 26vw, 380px);
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  width: 100%;
+  max-width: 1320px;
+}
+
+.sparta-stage .sparta-loop {
+  flex: none;
+  align-self: flex-start;
+  transition: width 0.8s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+.sparta-stage.split .sparta-loop {
+  width: min(calc(100% - var(--sparta-photo-w) - 32px), 900px, calc((100vh - 330px) * 2.5));
+}
+
+.sparta-photo {
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 0;
+  margin: 12px 0 8px;
+  overflow: hidden;
+  opacity: 0;
+  transform: translateX(40px) scale(0.96);
+  transition:
+    width 0.8s cubic-bezier(0.65, 0, 0.35, 1),
+    margin-left 0.8s cubic-bezier(0.65, 0, 0.35, 1),
+    opacity 0.6s ease 0.35s,
+    transform 0.8s cubic-bezier(0.3, 1.4, 0.5, 1) 0.35s;
+}
+
+.sparta-stage.split .sparta-photo {
+  width: var(--sparta-photo-w);
+  margin-left: 32px;
+  opacity: 1;
+  transform: none;
+}
+
+.sparta-photo-img {
+  flex: 1;
+  min-height: 0;
+  width: var(--sparta-photo-w);
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.14);
+}
+
+.sparta-photo-img img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.sparta-stage.split .sparta-photo-img img {
+  animation: sparta-kenburns 14s ease-in-out 0.4s infinite alternate;
+}
+
+.sparta-photo figcaption {
+  width: var(--sparta-photo-w);
+  font-size: 13px;
+  color: var(--muted);
+}
+
+@keyframes sparta-kenburns {
+  from {
+    transform: scale(1) translate(0, 0);
+  }
+  to {
+    transform: scale(1.12) translate(-2%, -2%);
+  }
 }
 
 .sparta-node {
@@ -2947,8 +3214,18 @@ button {
   .nineb-compare,
   .glm-specs-row,
   .glm-specs-row.two-col,
-  .snow {
+  .snow,
+  .cold {
     grid-template-columns: 1fr;
+  }
+  .cold-col {
+    min-height: 0;
+  }
+  .cold-core {
+    padding-top: 0;
+  }
+  .cold-flow {
+    display: none;
   }
 
   .claw-badge {
